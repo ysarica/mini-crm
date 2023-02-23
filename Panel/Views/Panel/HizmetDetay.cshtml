@@ -1,0 +1,718 @@
+﻿
+@{
+    ViewBag.Title = "HizmetDetay";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Baslik{ Hizmet Liste }
+@section sitemap{Hizmet Liste }
+@section title{ Hizmet Liste}
+@using Panel.Models;
+@model Panel.Models.TBLHizmet
+<div class="row">
+    <div class="col-md-3">
+        @{
+            PanelDB db = new PanelDB();
+
+            TBLKullanici temsilci = db.TBLKullanici.Where(x => x.KullaniciID == Model.TemsilciID).SingleOrDefault();
+        }
+        <!-- Profile Image -->
+        <div class="card card-primary card-outline">
+            <div class="card-body box-profile">
+                <div class="text-center">
+                    <img class="profile-user-img img-fluid img-circle"
+                         src="@temsilci.Resim"
+                         alt="@temsilci.AdSoyad">
+                </div>
+                <h3 class="profile-username text-center">@temsilci.AdSoyad</h3>
+                <p class="text-muted text-center">@temsilci.Mail</p>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+        @Html.Action("_HizmetMesajGonder", "Panel")
+        <!-- About Me Box -->
+        @{
+            List<TBLOdemeBildirim> odemebildirim = db.TBLOdemeBildirim.Where(x => x.HizmetID == Model.HizmetID & x.Silindi!="Silindi").ToList();
+        }
+        @foreach (var o in odemebildirim)
+        {
+            if (o.Durum == "Onaylanma Sürecinde")
+            {
+        <div class="card card-warning collapsed-card">
+            <div class="card-header">
+                <h3 class="card-title">@o.OBID-Ödeme Bildirimi</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <!-- /.card-tools -->
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body" style="display: none;">
+                <strong><i class="fas fa-book mr-1"></i> Bildirim Durum</strong>
+                <p class="text-muted">
+                    @o.Durum
+                </p>
+                <hr>
+                <strong><i class="fas fa-book mr-1"></i> Tarih</strong>
+                <p class="text-muted">
+                    @o.Tarih
+                </p>
+                <hr>
+                <strong><i class="fas fa-book mr-1"></i>Ödeme Yöntemi</strong>
+                <p class="text-muted">
+                    @o.OdemeYontem
+                </p>
+                <hr>
+                <strong><i class="fas fa-book mr-1"></i>Ödenen Banka</strong>
+                <p class="text-muted">
+                    @o.OdemeBanka
+                </p>
+                <hr>
+                <strong><i class="fas fa-book mr-1"></i>Ödeme Yapan Ad Soyad</strong>
+                <p class="text-muted">
+                    @o.AdSoyad
+                </p>
+                <hr>
+                <strong><i class="fas fa-book mr-1"></i>Ödenen Tutar</strong>
+                <p class="text-muted">
+                    @o.Tutar TL
+                </p>
+                <hr>
+            </div>
+            <!-- /.card-body -->
+        </div>
+            }
+            else if (o.Durum == "Onaylandı")
+            {
+        <div class="card card-success  collapsed-card">
+            <div class="card-header">
+                <h3 class="card-title">@o.OBID- Ödeme Bildirimi</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <!-- /.card-tools -->
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body" style="display: none;">
+                <strong><i class="fas fa-book mr-1"></i> Bildirim Durum</strong>
+                <p class="text-muted">
+                    @o.Durum
+                </p>
+                <hr>
+                <strong><i class="fas fa-book mr-1"></i> Tarih</strong>
+                <p class="text-muted">
+                    @o.Tarih
+                </p>
+                <hr>
+                <strong><i class="fas fa-book mr-1"></i>Ödeme Yöntemi</strong>
+                <p class="text-muted">
+                    @o.OdemeYontem
+                </p>
+                <hr>
+                <strong><i class="fas fa-book mr-1"></i>Ödenen Banka</strong>
+                <p class="text-muted">
+                    @o.OdemeBanka
+                </p>
+                <hr>
+                <strong><i class="fas fa-book mr-1"></i>Ödeme Yapan Ad Soyad</strong>
+                <p class="text-muted">
+                    @o.AdSoyad
+                </p>
+                <hr>
+                <strong><i class="fas fa-book mr-1"></i>Ödenen Tutar</strong>
+                <p class="text-muted">
+                    @o.Tutar TL
+                </p>
+                <hr>
+            </div>
+            <!-- /.card-body -->
+        </div>
+            }
+            else
+            {
+        <div class="card card-danger collapsed-card">
+            <div class="card-header">
+                <h3 class="card-title">@o.OBID- Ödeme Bildirimi</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <!-- /.card-tools -->
+            </div>
+            <div class="card-body" style="display: none;">
+
+                <!-- /.card-header -->
+                <strong><i class="fas fa-book mr-1"></i> Bildirim Durum</strong>
+                <p class="text-muted">
+                    @o.Durum
+                </p>
+                <hr>
+                <strong><i class="fas fa-book mr-1"></i> Tarih</strong>
+                <p class="text-muted">
+                    @o.Tarih
+                </p>
+                <hr>
+                <strong><i class="fas fa-book mr-1"></i>Ödeme Yöntemi</strong>
+                <p class="text-muted">
+                    @o.OdemeYontem
+                </p>
+                <hr>
+                <strong><i class="fas fa-book mr-1"></i>Ödenen Banka</strong>
+                <p class="text-muted">
+                    @o.OdemeBanka
+                </p>
+                <hr>
+                <strong><i class="fas fa-book mr-1"></i>Ödeme Yapan Ad Soyad</strong>
+                <p class="text-muted">
+                    @o.AdSoyad
+                </p>
+                <hr>
+                <strong><i class="fas fa-book mr-1"></i>Ödenen Tutar</strong>
+                <p class="text-muted">
+                    @o.Tutar TL
+                </p>
+                <hr>
+            </div>
+            <!-- /.card-body -->
+        </div>
+            }
+        }
+        <!-- /.card -->
+    </div>
+    <!-- /.col -->
+    <div class="col-md-9">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">Hizmet Bilgileri</h3>
+
+            </div>
+
+            <!-- /.card-header -->
+            <div class="card-body">
+                <h3 class="profile-username text-center">@Model.HizmetAdi</h3>
+                <p class="text-muted text-center">@Model.HizmetKategoriAd</p>
+                <p class="text-muted text-center">@Model.MüsteriAdi - @Model.Firma</p>
+                <p class="text-muted text-center">Hizmet Durum:@Model.HizmetDurum</p>
+                <hr>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <strong><i class="fa fa-address-card"></i> Müşteri Adı</strong>
+                        <p class="text-muted">
+                            @Model.MüsteriID - @Model.MüsteriAdi
+                        </p>
+                        <hr>
+                        <strong><i class="fa fa-user-circle"></i> Temsilci</strong>
+                        <p class="text-muted">
+                            @Model.TemsilciID - @Model.TemsilciAdi
+                        </p>
+                        <hr>
+                        <strong><i class="fa fa-calendar"></i> Hizmet Süresi</strong>
+                        <p class="text-muted">
+                            Başlangıç(@Model.HizmetBaslangicTarihi)   -Bitis(@Model.HizmetBitisTarihi)
+                        </p>
+                        <hr>
+                    </div>
+                    <div class="col-lg-4">
+                        <strong><i class="fa fa-star"></i> Hizmet Adı</strong>
+                        <p class="text-muted">
+                            @Model.HizmetID - @Model.HizmetAdi
+                        </p>
+                        <hr>
+                        <strong><i class="fa fa-calendar"></i> Hizmet Kayıt Tarihi</strong>
+                        <p class="text-muted">
+                            @Model.IslemTarihi
+                        </p>
+                        <hr>
+
+                        @if (Model.HizmetBaslangicTarihi != "" && Model.HizmetBaslangicTarihi != null)
+                        {
+
+                        <strong><i class="fa fa-calendar"></i> Hizmet Baslangic Tarihi</strong>
+                        <p class="text-muted">
+                            @Model.HizmetBaslangicTarihi
+                        </p>
+                        <hr>
+                        }
+                    </div>
+                    <div class="col-lg-4">
+                        <strong><i class="fa fa-star"></i> Hizmet Kategorisi</strong>
+                        <p class="text-muted">
+                            @Model.HizmetKategoriID - @Model.HizmetKategoriAd
+                        </p>
+                        <hr>
+                        <strong><i class="fa fa-credit-card"></i> Hizmet Bedeli</strong>
+                        <p class="text-muted">
+                            @Model.HizmetBedeli TL
+                        </p>
+                        <hr>
+                        <strong><i class="fa fa-check"></i><i class="fa fa-credit-card"></i> Odeme Durumu</strong>
+                        <p class="text-muted">
+                            @Model.OdemeDurum
+                        </p>
+
+
+                        @if (Model.OdemeDurum == "Ödendi")
+                        {
+                        <hr>
+                        <strong><i class="fa fa-calendar"></i> Ödeme Tarihi</strong>
+                        <p class="text-muted">
+                            @Model.OdemeTarihi
+                        </p>
+                        <hr>
+                        }
+                        @if (Model.HizmetBitisTarihi != "" && Model.HizmetBitisTarihi != null)
+                        {
+
+                        <strong><i class="fa fa-calendar"></i> Hizmet Bitis Tarihi</strong>
+                        <p class="text-muted">
+                            @Model.HizmetBitisTarihi
+                        </p>
+                        <hr>
+                        }
+                    </div>
+                </div>
+
+
+                <!--Burası İçerisi-->
+
+            </div>
+            <!-- /.card-body -->
+        </div>
+
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">Fatura</h3>
+
+            </div>
+
+            <!-- /.card-header -->
+            <div class="card-body">
+                @{  TBLFatura fatura = db.TBLFatura.Where(x => x.HizmetID == Model.HizmetID).SingleOrDefault();
+                    TBLKullanici fmusteri = db.TBLKullanici.Where(x => x.KullaniciID == fatura.KullaniciID).SingleOrDefault();
+
+                }
+
+                <div class="invoice p-3 mb-3">
+                    <!-- title row -->
+                    <div class="row">
+                        <div class="col-12">
+                            <h4>
+                                <i class="fas fa-globe"></i> SRC MEDİA, Frealancer
+                                <small class="float-right">Tarih: @Model.IslemTarihi</small>
+                            </h4>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- info row -->
+                    <div class="row invoice-info">
+                        <div class="col-sm-4 invoice-col">
+                            Hizmet Veren
+                            <address>
+                                @* Burası Dinamik Olacak *@
+                                <strong>Src Media</strong><br>
+                                www.srcmedia.com<br>
+                                Pendik İstanbul, 34000<br>
+                                Telefon: (531) 957-4200<br>
+                                Email: info@srcmedia.com
+                            </address>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-4 invoice-col">
+                            Hizmet Alan
+                            <address>
+                                <strong>@fatura.KullaniciAd - @fatura.FirmaAdi</strong><br>
+                                @fmusteri.Adres<br>
+                                Telefon:@fmusteri.Telefon<br>
+                                Email: @fmusteri.Mail
+                            </address>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-4 invoice-col">
+                            <b>Fatura No #@fatura.FaturaID</b><br>
+                            <b>Hizmet No:</b> @fatura.HizmetID<br>
+                            <b>Durum:</b> @fatura.OdemeDurum<br>
+                            @if (fatura.OdemeTarih != "")
+                            {
+                            <b>Ödeme Tarihi:</b>@fatura.OdemeTarih
+                            }
+                            <b>Hizmet:</b> @fatura.HizmetAdi<br>
+                            <b>Hizmet Tipi:</b>@fatura.HizmetKategoriAdi
+
+
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                    <!-- Table row -->
+                    <div class="row">
+                        <div class="col-12 table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>H. No</th>
+                                        <th>Hizmet</th>
+                                        <th>Kategori</th>
+                                        <th>Firma Adı</th>
+                                        <th>Toplam Tutar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>@fatura.HizmetID </td>
+                                        <td>@fatura.HizmetAdi</td>
+                                        <td>@fatura.HizmetKategoriAdi</td>
+                                        <td>@fatura.FirmaAdi - @fatura.KullaniciAd</td>
+                                        <td>@fatura.HizmetBedeli ₺</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+
+                    <div class="row">
+                        <!-- accepted payments column -->
+                        <div class="col-6">
+                            <p class="lead">Alınan Ödeme:</p>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    @{
+                                        int ToplamAlınan = 0;
+                                        List<TBLOdeme> odeme = db.TBLOdeme.Where(x => x.HizmetID == fatura.HizmetID).ToList();
+                                        foreach (var item in odeme)
+                                        {
+                                            ToplamAlınan = ToplamAlınan + Convert.ToInt32(item.AlınanOdeme);
+                                        }
+                                    }
+                                    <tbody>
+                                        @foreach (var o in odeme)
+                                        {
+                                        <tr>
+                                            <td>@o.OdemeYontem</td>
+                                            <td>+@o.AlınanOdeme ₺</td>
+
+                                        </tr>
+                                        }
+
+                                        <tr>
+                                            <th>Toplam Alınan</th>
+                                            <td>@ToplamAlınan ₺</td>
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-6">
+                            <p class="lead">Ücret</p>
+
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <th style="width:50%">Hizmet Bedeli:</th>
+                                            <td>@fatura.HizmetBedeli ₺</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Kalan Tutar</th>
+                                            <td>@fatura.KalanTutar ₺</td>
+                                        </tr>
+                                        @if (fatura.OdemeTip != "")
+                                        {
+                                        <tr>
+                                            <th>Ödeme Tip:</th>
+                                            <td>@fatura.OdemeTip</td>
+                                        </tr>
+                                        }
+                                        @if (fatura.OdemeYontem != "")
+                                        {
+                                        <tr>
+                                            <th>Ödeme Yöntem:</th>
+                                            <td>@fatura.OdemeYontem</td>
+                                        </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                    <!-- this row will not appear when printing -->
+                    <div class="row no-print">
+                        <div class="col-12">
+                            <div class="btn-group float-right">
+                                <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#OdemeBildirimGonder">
+                                    <i class="far fa-credit-card"></i> Ödeme Bildirimi Gönder
+                                </button>
+                                <button type="button" class="btn btn-info float-right" data-toggle="modal" data-target="#OdemeBilgi">
+                                    <i class="fa fa-info-circle"></i> Ödeme Bilgileri
+                                </button>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.card-body -->
+        </div>
+
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">Dosyalar</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#Nereye">Dosya Ekle</button>
+                </div>
+                <div class="modal fade bd-example-modal-lg" id="Nereye" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Modal Title</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            @using (Html.BeginForm("_DosyaEkle", "Panel", FormMethod.Post, new { @class = "form-horizontal", @id = "form_sample_1", @enctype = "multipart/form-data" }))
+                            {<div class="d-none">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label>Dosya Adı:</label>
+                                        <input class="form-control" id="DosyaAdi" name="DosyaAdi" placeholder="Dosya Adı Giriniz">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Dosya Açıklama:</label>
+                                    <input class="form-control" id="DosyaAciklama" name="DosyaAciklama" placeholder="Dosyanın Açıklamasını Giriniz">
+                                </div>
+                                <div class="form-group">
+                                    <label>Dosya:</label>
+
+                                    <div class="btn btn-default btn-file">
+                                        <i class="fas fa-paperclip"></i> Dosya
+                                        <input type="file" name="attachment" id="attachment">
+                                    </div>
+                                </div>
+                                <div class="d-none">
+                                    <div class="form-group">
+                                        <label>Dosya Açıklama:</label>
+                                        <input class="form-control" id="SahiplikID" name="SahiplikID" value="@Model.HizmetID">
+                                    </div>
+                                </div>
+                                <div class="d-none">
+                                    <div class="form-group">
+                                        <label>Dosya Açıklama:</label>
+                                        <input class="form-control" id="SahiplikTipi" name="SahiplikTipi" value="Hizmet">
+                                    </div>
+                                </div>
+                                <div class="d-none">
+                                    <div class="form-group">
+                                        <label>Dosya Açıklama:</label>
+                                        <input class="form-control" id="DonusYolu" name="DonusYolu" value="/Panel/HizmetDetay?HizmetID=@Model.HizmetID">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Çık</button>
+                                <button type="submit" class="btn btn-primary">Ekle</button>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+
+                <div class="row mailbox-attachments d-flex align-items-stretch clearfix">
+                    @foreach (var d in ViewBag.Dosyalar)
+                    {
+
+
+                        <div class="col-lg-3">
+
+                            <span class="mailbox-attachment-icon"><i class="far fa-folder"></i></span>
+
+                            <div class="mailbox-attachment-info">
+                                <a class="mailbox-attachment-name"><i class="fas fa-paperclip"></i>  @d.DosyaAdi</a>
+                                <span class="mailbox-attachment-size clearfix mt-1">
+                                    <span>@d.DosyaTipi</span>
+
+                                    <button type="button" class="btn btn-default btn-sm float-right" data-toggle="modal" data-target="#Dosya-@d.DID"><i class="fas fa-info"></i></button>
+                                    <a href="@d.DosyaYolu" download class="btn btn-default btn-sm float-right"><i class="fas fa-cloud-download-alt"></i></a>
+                                </span>
+                            </div>
+                        </div>
+
+                            <div class="modal fade bd-example-modal-lg" id="Dosya-@d.DID" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Dosya Bilgi</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-12 col-sm-4">
+                                                    <div class="info-box bg-light">
+                                                        <div class="info-box-content">
+                                                            <span class="info-box-text text-center text-muted">Dosya Adı</span>
+                                                            <span class="info-box-number text-center text-muted mb-0">@d.DosyaAdi</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-sm-4">
+                                                    <div class="info-box bg-light">
+                                                        <div class="info-box-content">
+                                                            <span class="info-box-text text-center text-muted">Dosya Uzantı</span>
+                                                            <span class="info-box-number text-center text-muted mb-0">@d.DosyaTipi</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-sm-4">
+                                                    <div class="info-box bg-light">
+                                                        <div class="info-box-content">
+                                                            <span class="info-box-text text-center text-muted">Yükleyen Adı</span>
+                                                            <span class="info-box-number text-center text-muted mb-0">
+                                                                @d.YukleyenAdi <span>
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-sm-12">
+                                                    <div class="info-box bg-light">
+                                                        <div class="info-box-content">
+                                                            <span class="info-box-text text-center text-muted">Dosya Aciklama</span>
+                                                            <span class="info-box-number text-center text-muted mb-0">
+                                                                @d.DosyaAciklama <span>
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-sm-12">
+                                                    <div class="info-box bg-light">
+                                                        <div class="info-box-content">
+                                                            <span class="info-box-text text-center text-muted">Yükleme Tarihi</span>
+                                                            <span class="info-box-number text-center text-muted mb-0">
+                                                                @d.Tarih <span>
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Çık</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                    }
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+    <!-- /.col -->
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="OdemeBildirimGonder" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Ödeme Bildirimi Gönder</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @Html.Action("_OdemeBildirimGonder", "Panel")
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="modal fade bd-example-modal-lg" id="OdemeBilgi" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Banka Hesapları</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @{
+                    List<TBLHesaplar> hesap = db.TBLHesaplar.ToList();
+                }
+                <div class="card-body pb-0">
+                    <div class="row d-flex align-items-stretch">
+
+
+
+
+
+                        @foreach (var h in hesap)
+                        {
+
+
+                            <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
+                                <div class="card bg-light">
+                                    <div class="card-header text-muted border-bottom-0">
+                                        @h.BankaAdi
+                                    </div>
+                                    <div class="card-body pt-0">
+                                        <div class="row">
+                                            <div class="col-7">
+                                                <h2 class="lead"><b>@h.AdSoyad</b></h2>
+                                                <p class="text-muted text-sm"><b>IBAN: </b> @h.Iban </p>
+                                            </div>
+                                            <div class="col-5 text-center">
+                                                <img src="@h.Logo" alt="" class="img-circle img-fluid">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Çık</button>
+                <button type="submit" class="btn btn-warning">Güncelle</button>
+            </div>
+
+        </div>
+    </div>
+</div>

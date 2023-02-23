@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Panel.Models.TBLHizmet>
+@using Panel.Models;
+<section class="content">
+   
+            <div class="row d-flex align-items-stretch">
+           @if (Model.Count()==0)
+           {
+               <p>Herhangi Bir Temsilcilik Bulunamadı.</p>
+           }
+                @foreach (var a in Model.OrderByDescending(x => x.HizmetID))
+                {
+                    
+                    <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
+                        @{ PanelDB db = new PanelDB();
+                        TBLKullanici Müsteri = db.TBLKullanici.Where(x => x.KullaniciID == a.MüsteriID).SingleOrDefault();
+
+                    }
+                        <div class="card bg-light">
+                            <div class="card-header text-muted border-bottom-0">
+                                Firma:@a.Firma
+                            </div>
+                            <div class="card-body pt-0">
+                                <div class="row">
+                                    <div class="col-7">
+                                        <h2 class="lead"><b>@a.MüsteriAdi</b></h2>
+                                        <ul class="ml-4 mb-0 fa-ul text-muted">
+                                            <li class="small"><span class="fa-li"><i class="fa fa-check"></i></span> Hizmet Adı : @a.HizmetAdi</li>
+                                            <li class="small"><span class="fa-li"><i class="fa fa-check"></i></span> Hizmet Kategori : @a.HizmetKategoriAd</li>
+                                            <li class="small"><span class="fa-li"><i class="fa fa-check"></i></span> Hizmet Bedeli:@a.HizmetBedeli </li>
+                                            <li class="small"><span class="fa-li"><i class="fa fa-check"></i></span> Odeme Durum:@a.OdemeDurum </li>
+                                            <li class="small"><span class="fa-li"><i class="fa fa-check"></i></span> İşlem Tarihi:@a.IslemTarihi </li>
+                                            <li class="small"><span class="fa-li"><i class="fa fa-check"></i></span> Hizmet No:@a.HizmetID </li>
+
+
+                                        </ul>
+                                    </div>
+                                    <div class="col-5 text-center">
+                                        <img src="@Müsteri.Resim" alt="" class="img-circle img-fluid">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="text-right">
+                                    <a href="/Admin/HizmetDetay?HizmetID=@a.HizmetID" target="_blank" class="btn btn-sm btn-primary">
+                                         Detay
+                                    </a>
+                                    <a href="/Admin/MusteriDetay?KullaniciID=@a.MüsteriID" target="_blank" class="btn btn-sm btn-primary">
+                                         Müşteri Detay
+                                    </a>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                     
+            </div>
+        
+</section>
+
+
+

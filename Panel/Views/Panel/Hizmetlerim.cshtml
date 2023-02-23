@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewBag.Title = "Hizmetlerim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Panel.Models;
+@section Baslik{ Hizmetlerim }
+@section sitemap{Hizmetlerim  }
+@section title{ Hizmetlerim }
+@model IEnumerable<Panel.Models.TBLHizmet>
+<div class="card card-outline card-primarycard-outline card-primary">
+    <div class="card-header">
+        <h3 class="card-title">Hizmetler</h3>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <table id="listele1" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th width="1%">Hizmet No</th>
+                    <th width="1%">Hizmet</th>
+                    <th>Hizmet Tipi</th>
+                    <th>Temsilci</th>
+                    <th>Mesaj</th>
+                    <th width="5%">İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var a in Model)
+                {
+                    <tr>
+                        @{ 
+                            PanelDB db = new PanelDB();
+                            int KullaniciID = Convert.ToInt32(Session["KullaniciID"]);
+                            int MesajSayi = db.TBLHizmetMesaj.Where(x => x.HizmetID == a.HizmetID && x.GonderenID != KullaniciID && x.Okundu == "Okunmadı").Count();
+                        }
+                        <td>@a.HizmetID</td>
+                        <td>@a.HizmetAdi</td>
+                        <td>@a.HizmetKategoriAd</td>
+                        <td>@a.TemsilciAdi</td>
+                        <td><small class="badge badge-danger"><i class="far fa-me"></i>@MesajSayi</small></td>
+                        <td><a href="/Panel/HizmetDetay?HizmetID=@a.HizmetID" class="btn btn-info btn btn-block">Detay</a></td>
+                        
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th width="1%">Hizmet No</th>
+                    <th width="1%">Hizmet</th>
+                    <th>Hizmet Tipi</th>
+                    <th>Temsilci</th>
+                    <th>Mesaj</th>
+                    <th width="5%">İşlem</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <!-- /.card-body -->
+</div>

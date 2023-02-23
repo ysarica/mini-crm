@@ -1,0 +1,42 @@
+﻿
+@using (Html.BeginForm("_MesajOlustur", "Admin", FormMethod.Post, new { @class = "form-horizontal", @id = "form_sample_1", @enctype = "multipart/form-data" }))
+{
+<div class="modal-body">
+
+    <!--Burası İçerisi-->
+    <div class="form-group">
+        <label>Kullanıcı Seçiniz:</label>
+        <select class="form-control select2" name="AliciID" id="AliciID" style="width: 100%;">
+            <option selected="" disabled="">Kime:</option>
+            @foreach (var a in ViewBag.Kime)
+            {
+                <option value="@a.KullaniciID">@a.KullaniciTip - @a.AdSoyad - @a.Firma</option>
+            }
+        </select>
+    </div>
+
+        <div class="form-group">
+            <input class="form-control" id="Konu" name="Konu" placeholder="Konu:">
+        </div>
+        <div class="form-group">
+            <textarea id="compose-textarea" name="compose" class="form-control" style="height: 300px">
+                
+            </textarea>
+        </div>
+        <div class="form-group">
+            <div class="btn btn-default btn-file">
+                <i class="fas fa-paperclip"></i> Dosya
+                <input type="file" name="attachment" id="attachment">
+            </div>
+            <p class="help-block">Dosyayı Sıkıştırarak Yükleyin</p>
+        </div>
+    
+
+
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Çık</button>
+    <button type="submit" class="btn btn-primary">Gönder</button>
+</div>
+}

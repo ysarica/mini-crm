@@ -1,0 +1,309 @@
+﻿@model IEnumerable<Panel.Models.TBLHizmet>
+@using Panel.Models;
+
+
+<section class="content">
+
+    <div class="row d-flex align-items-stretch">
+        @if (Model.Count() == 0)
+        {
+            <p>Herhangi Bir Temsilcilik Bulunamadı.</p>
+        }
+        @foreach (var a in Model.OrderByDescending(x => x.HizmetID))
+        {
+            <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
+                @{ PanelDB db = new PanelDB();
+                    TBLKullanici Müsteri = db.TBLKullanici.Where(x => x.KullaniciID == a.MüsteriID).SingleOrDefault();
+
+                }
+                <div class="card bg-light">
+                    <div class="card-header text-muted border-bottom-0">
+                        Firma:@a.Firma
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="row">
+                            <div class="col-7">
+                                <h2 class="lead"><b>@a.MüsteriAdi</b></h2>
+                                <ul class="ml-4 mb-0 fa-ul text-muted">
+                                    <li class="small"><span class="fa-li"><i class="fa fa-check"></i></span> Hizmet Adı : @a.HizmetAdi</li>
+                                    <li class="small"><span class="fa-li"><i class="fa fa-check"></i></span> Hizmet Kategori : @a.HizmetKategoriAd</li>
+                                    <li class="small"><span class="fa-li"><i class="fa fa-check"></i></span> Hizmet Bedeli:@a.HizmetBedeli </li>
+                                    <li class="small"><span class="fa-li"><i class="fa fa-check"></i></span> Odeme Durum:@a.OdemeDurum </li>
+                                    <li class="small"><span class="fa-li"><i class="fa fa-check"></i></span> İşlem Tarihi:@a.IslemTarihi </li>
+                                    <li class="small"><span class="fa-li"><i class="fa fa-check"></i></span> Hizmet No:@a.HizmetID </li>
+
+                                </ul>
+                            </div>
+                            <div class="col-5 text-center">
+                                <img src="@Müsteri.Resim" alt="" class="img-circle img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="text-right">
+
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-@a.HizmetID">Detay</button>
+                            <a href="/Admin/YetkiliDetay?KullaniciID=@a.TemsilciID" target="_blank" class="btn btn-sm btn-primary">
+                                Temsilci Detay
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <!--Detay-->
+            <div class="modal fade bd-example-modal-lg" id="modal-@a.HizmetID" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">@a.MüsteriAdi Hizmet Detay</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+
+                                <div class="col-6">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">Müşteri Adı</span>
+                                            <span class="info-box-number text-center text-muted mb-0">@a.MüsteriAdi</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">Firma</span>
+                                            <span class="info-box-number text-center text-muted mb-0">
+                                                @a.Firma <span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">Hizmet</span>
+                                            <span class="info-box-number text-center text-muted mb-0">@a.HizmetAdi</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">Hizmet Kategori</span>
+                                            <span class="info-box-number text-center text-muted mb-0">
+                                                @a.HizmetKategoriAd <span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">Temsilci</span>
+                                            <span class="info-box-number text-center text-muted mb-0">
+                                                @a.TemsilciAdi <span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">Hizmet Baslangıç Tarihi</span>
+                                            <span class="info-box-number text-center text-muted mb-0">
+                                                @a.HizmetBaslangicTarihi <span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">Hizmet Tahmini Bitiş Tarihi</span>
+                                            <span class="info-box-number text-center text-muted mb-0">
+                                                @a.HizmetBitisTarihi <span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">İşlem Tarihi</span>
+                                            <span class="info-box-number text-center text-muted mb-0">
+                                                @a.IslemTarihi <span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">Açıklama</span>
+                                            <span class="info-box-number text-center text-muted mb-0">
+                                                @a.Aciklama <span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">Hizmet Bedeli</span>
+                                            <span class="info-box-number text-center text-muted mb-0">
+                                                @a.HizmetBedeli <span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                @if (a.FTPSunucu != null)
+                                {
+                                    <div class="col-6">
+                                        <div class="info-box bg-light">
+                                            <div class="info-box-content">
+                                                <span class="info-box-text text-center text-muted">FTP Sunucu</span>
+                                                <span class="info-box-number text-center text-muted mb-0">
+                                                    @a.FTPSunucu <span>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                @if (a.FTPKullaniciAdi != null)
+                                {
+                                    <div class="col-6">
+                                        <div class="info-box bg-light">
+                                            <div class="info-box-content">
+                                                <span class="info-box-text text-center text-muted">FTP Kullanici Adı</span>
+                                                <span class="info-box-number text-center text-muted mb-0">
+                                                    @a.FTPKullaniciAdi <span>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                @if (a.FTPSifre != null)
+                                {
+                                    <div class="col-6">
+                                        <div class="info-box bg-light">
+                                            <div class="info-box-content">
+                                                <span class="info-box-text text-center text-muted">FTP Şifre</span>
+                                                <span class="info-box-number text-center text-muted mb-0">
+                                                    @a.FTPSifre <span>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                @if (a.BaslangicTarihi != null)
+                                {
+                                    <div class="col-6">
+                                        <div class="info-box bg-light">
+                                            <div class="info-box-content">
+                                                <span class="info-box-text text-center text-muted">FTP Baslangic Tarihi</span>
+                                                <span class="info-box-number text-center text-muted mb-0">
+                                                    @a.BaslangicTarihi <span>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                @if (a.BitisTarihi != null)
+                                {
+                                    <div class="col-6">
+                                        <div class="info-box bg-light">
+                                            <div class="info-box-content">
+                                                <span class="info-box-text text-center text-muted">FTP Bitis Tarihi</span>
+                                                <span class="info-box-number text-center text-muted mb-0">
+                                                    @a.BitisTarihi <span>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                @if (a.OdemeTarihi != null)
+                                {
+                                    <div class="col-6">
+                                        <div class="info-box bg-light">
+                                            <div class="info-box-content">
+                                                <span class="info-box-text text-center text-muted">Odeme Tarihi</span>
+                                                <span class="info-box-number text-center text-muted mb-0">
+                                                    @a.OdemeTarihi <span>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                <div class="col-6">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">Odeme Durum</span>
+                                            <span class="info-box-number text-center text-muted mb-0">
+                                                @a.OdemeDurum <span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">Hizmet Durum</span>
+                                            <span class="info-box-number text-center text-muted mb-0">
+                                                @a.HizmetDurum <span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="info-box bg-light">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text text-center text-muted">Musteriye Ulaştımı</span>
+                                            <span class="info-box-number text-center text-muted mb-0">
+                                                @a.GorulduDurum <span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="/Admin/HizmetDetay?HizmetID=@a.HizmetID" class="btn btn-primary">Hizmete Git</a>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Çıkış</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                            <!--/Detay-->
+        }
+
+    </div>
+
+</section>
+

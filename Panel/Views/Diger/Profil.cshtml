@@ -1,0 +1,222 @@
+﻿
+@{
+    ViewBag.Title = "Profil";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Baslik{ PROFİL }
+@section sitemap{PROFİL }
+@section title{PROFİL}
+@model Panel.Models.TBLKullanici
+<div class="row">
+    <div class="col-lg-3">
+
+        <div class="card card-primary card-outline">
+            <div class="card-body box-profile">
+                <div class="text-center">
+                    <img class="profile-user-img img-fluid img-circle" src="@Model.Resim" alt="@Model.AdSoyad">
+                </div>
+
+                <h3 class="profile-username text-center">@Model.AdSoyad</h3>
+
+            </div>
+            <!-- /.card-body -->
+        </div>
+
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">İşlemler</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+
+                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#ResimGuncelle">Resim Güncelle</button>
+                <hr />
+                <div class="modal fade bd-example-modal-lg" id="ResimGuncelle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle"> Resim Güncelle </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            @using (Html.BeginForm("_ResimDegistir", "Diger", FormMethod.Post, new { @class = "form-horizontal", @id = "form_sample_1", @enctype = "multipart/form-data" }))
+                            {
+                                <div class="modal-body">
+
+                                    <div class="form-group">
+                                        <div class="btn btn-default btn-file">
+                                            <i class="fas fa-paperclip"></i> Dosya
+                                            <input type="file" name="attachment" id="attachment">
+                                        </div>
+                                    </div>
+
+                                    <!--Burası İçerisi-->
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Çık</button>
+                                    <button type="submit" class="btn btn-warning">Güncelle</button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#BilgiGuncelle">Bilgileri Güncelle</button>
+                <hr />
+                <div class="modal fade bd-example-modal-lg" id="BilgiGuncelle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle"> Bilgileri Güncelle </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            @using (Html.BeginForm("Profil", "Diger", FormMethod.Post))
+            {
+                                @Html.HiddenFor(x => x.KullaniciID)
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label>Ad Soyad</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control" placeholder="Ad Soyad" id="AdSoyad" name="AdSoyad" value="@Model.AdSoyad">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Mail</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control" placeholder="Mail" id="Mail" name="Mail" value="@Model.Mail">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Telefon</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control" placeholder="Telefon" id="Telefon" name="Telefon" value="@Model.Telefon">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Adres</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control" placeholder="Adres" id="Adres" name="Adres" value="@Model.Adres">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Çık</button>
+                                    <button type="submit" class="btn btn-warning">Güncelle</button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#SifreGuncelle">Şifre Güncelle</button>
+                <hr />
+                <div class="modal fade bd-example-modal-lg" id="SifreGuncelle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle"> Şifre Güncelle </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            @using (Html.BeginForm("_SifreDegistir", "Diger", FormMethod.Post))
+            {
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label>Eski Şifreniz</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control" placeholder="Eski Şifreniz" id="Sifre" name="Sifre">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Yeni Şifreniz</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control" placeholder="Yeni Şifre" id="npw" name="npw">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Çık</button>
+                                    <button type="submit" class="btn btn-warning">Güncelle</button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+    <div class="col-lg-9">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">Bilgiler</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <strong><i class="fa fa-address-card"></i> Ad Soyad</strong>
+                        <p class="text-muted">
+                            @Model.KullaniciID- @Model.AdSoyad
+                        </p>
+                        <hr>
+                        <strong><i class="fa fa-user-circle"></i> Mail</strong>
+                        <p class="text-muted">
+                            @Model.Mail
+                        </p>
+                        <hr>
+                        <strong><i class="fa fa-calendar"></i> Temsilci Adı</strong>
+                        <p class="text-muted">
+                            @Model.TemsilciID- @Model.TemsilciAdi
+                        </p>
+                        <hr>
+                    </div>
+                    <div class="col-lg-6">
+                        <strong><i class="fa fa-star"></i> Telefon</strong>
+                        <p class="text-muted">
+                            @Model.Telefon
+                        </p>
+                        <hr>
+                        <strong><i class="fa fa-calendar"></i> Adres</strong>
+                        <p class="text-muted">
+                            @Model.Adres
+                        </p>
+                        <hr>
+
+                        <strong><i class="fa fa-calendar"></i> Firma</strong>
+                        <p class="text-muted">
+                            @Model.Firma
+                        </p>
+                        <hr>
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,265 @@
+﻿
+@{
+    ViewBag.Title = "TalepDetay";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Panel.Models.TBLTalep
+@section Baslik{ Talep Detay }
+@section sitemap{Talep Detay }
+@section title{Talep Detay}
+@using Panel.Models;
+
+<div class="row">
+    <div class="col-lg-3">
+        @{
+            PanelDB db = new PanelDB();
+        }
+        <!-- /.card -->
+        @Html.Action("_TalepMesajGonder", "Panel")
+        <!-- About Me Box -->
+     
+    </div>
+    <div class="col-lg-9">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">Talep Detay</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+         
+                <div class="row">
+                    <div class="col-lg-4">
+                        <strong><i class="fa fa-address-card"></i> Ad Soyad:</strong>
+                        <p class="text-muted">
+                            @Model.AdSoyad
+                        </p>
+                        <hr>
+                        <strong><i class="fa fa-phone"></i> Telefon:</strong>
+                        <p class="text-muted">
+                         @Model.Telefon
+                        </p>
+                        <hr>
+                    
+                    </div>
+                    <div class="col-lg-4">
+                        <strong><i class="fa fa-envelope"></i> Mail:</strong>
+                        <p class="text-muted">
+                            @Model.Mail
+                        </p>
+                        <hr>
+                        <strong><i class="fa fa-star"></i> Talep Hizmet Kategori:</strong>
+                        <p class="text-muted">
+                            @Model.HizmetKategoriAdi
+                        </p>
+                        <hr>
+                    </div>
+                    <div class="col-lg-4">
+                        <strong><i class="fa fa-building"></i> Firma Adı:</strong>
+                        <p class="text-muted">
+                            @Model.FirmaAdi
+                        </p>
+                        <hr>
+                        <strong><i class="fa fa-bookmark"></i> Durum:</strong>
+                        <p class="text-muted">
+                            @Model.Durum
+                        </p>
+                        <hr>
+                        
+                    </div>
+                    <div class="col-lg-12">
+                        <strong><i class="fa fa-clone"></i> Talep:</strong>
+                        <p class="text-muted">
+                            @Html.Raw(Model.Talep)
+                        </p>
+                        <hr>
+                    </div>
+                </div>
+               
+
+            </div>
+            <!-- /.card-body -->
+        </div>
+
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">Dosyalar</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#Nereye">Dosya Ekle</button>
+                </div>
+                <div class="modal fade bd-example-modal-lg" id="Nereye" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Modal Title</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            @using (Html.BeginForm("_DosyaEkle", "Panel", FormMethod.Post, new { @class = "form-horizontal", @id = "form_sample_1", @enctype = "multipart/form-data" }))
+                            {
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label>Dosya Adı:</label>
+                                        <input class="form-control" id="DosyaAdi" name="DosyaAdi" placeholder="Dosya Adı Giriniz">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Dosya Açıklama:</label>
+                                        <input class="form-control" id="DosyaAciklama" name="DosyaAciklama" placeholder="Dosyanın Açıklamasını Giriniz">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Dosya:</label>
+
+                                        <div class="btn btn-default btn-file">
+                                            <i class="fas fa-paperclip"></i> Dosya
+                                            <input type="file" name="attachment" id="attachment">
+                                        </div>
+                                    </div>
+                                    <div class="d-none">
+                                        <div class="form-group">
+                                            <label>Dosya Açıklama:</label>
+                                            <input class="form-control" id="SahiplikID" name="SahiplikID" value="@Model.TalepID">
+                                        </div>
+                                    </div>
+                                    <div class="d-none">
+                                        <div class="form-group">
+                                            <label>Dosya Açıklama:</label>
+                                            <input class="form-control" id="SahiplikTipi" name="SahiplikTipi" value="Talep">
+                                        </div>
+                                    </div>
+                                    <div class="d-none">
+                                        <div class="form-group">
+                                            <label>Dosya Açıklama:</label>
+                                            <input class="form-control" id="DonusYolu" name="DonusYolu" value="/Panel/TalepDetay?TalepID=@Model.TalepID">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Çık</button>
+                                    <button type="submit" class="btn btn-primary">Ekle</button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+     
+                <div class="card-body">
+
+                    <div class="row mailbox-attachments d-flex align-items-stretch clearfix">
+                        @foreach (var d in ViewBag.Dosyalar)
+                        {
+
+
+                            <div class="col-lg-3">
+
+                                <span class="mailbox-attachment-icon"><i class="far fa-folder"></i></span>
+
+                                <div class="mailbox-attachment-info">
+                                    <a class="mailbox-attachment-name"><i class="fas fa-paperclip"></i>  @d.DosyaAdi</a>
+                                    <span class="mailbox-attachment-size clearfix mt-1">
+                                        <span>@d.DosyaTipi</span>
+
+                                        <button type="button" class="btn btn-default btn-sm float-right" data-toggle="modal" data-target="#Dosya-@d.DID"><i class="fas fa-info"></i></button>
+                                        <a href="@d.DosyaYolu" download class="btn btn-default btn-sm float-right"><i class="fas fa-cloud-download-alt"></i></a>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="modal fade bd-example-modal-lg" id="Dosya-@d.DID" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Dosya Bilgi</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-12 col-sm-4">
+                                                    <div class="info-box bg-light">
+                                                        <div class="info-box-content">
+                                                            <span class="info-box-text text-center text-muted">Dosya Adı</span>
+                                                            <span class="info-box-number text-center text-muted mb-0">@d.DosyaAdi</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-sm-4">
+                                                    <div class="info-box bg-light">
+                                                        <div class="info-box-content">
+                                                            <span class="info-box-text text-center text-muted">Dosya Tipi</span>
+                                                            <span class="info-box-number text-center text-muted mb-0">@d.DosyaTipi</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-sm-4">
+                                                    <div class="info-box bg-light">
+                                                        <div class="info-box-content">
+                                                            <span class="info-box-text text-center text-muted">Yükleyen Adı</span>
+                                                            <span class="info-box-number text-center text-muted mb-0">
+                                                                @d.YukleyenAdi <span>
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-sm-12">
+                                                    <div class="info-box bg-light">
+                                                        <div class="info-box-content">
+                                                            <span class="info-box-text text-center text-muted">Dosya Aciklama</span>
+                                                            <span class="info-box-number text-center text-muted mb-0">
+                                                                @d.DosyaAciklama <span>
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Çık</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        }
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.card-body -->
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+    </div>
+</div>

@@ -1,0 +1,170 @@
+﻿@{
+    ViewBag.Title = "MesajDetay";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Baslik{ Mesajlar }
+@section sitemap{Mesajlar }
+@section title{Mesajlar}
+@model Panel.Models.TBLMesaj
+@using Panel.Models;
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            @{
+                PanelDB db = new PanelDB();
+                int ID = 0;
+                int KullaniciID = Convert.ToInt32(Session["KullaniciID"].ToString());
+
+                if (KullaniciID == Model.AliciID)
+                {
+                    ID = Convert.ToInt32(Model.GonderenID);
+                }
+                else
+                {
+                    ID = Convert.ToInt32(Model.AliciID);
+                }
+                TBLKullanici Alici = db.TBLKullanici.Where(x => x.KullaniciID == ID).SingleOrDefault();
+            }
+            <!-- Profile Image -->
+            <div class="card card-primary card-outline">
+                <div class="card-body box-profile">
+                    <div class="text-center">
+                        <img class="profile-user-img img-fluid img-circle"
+                             src="@Alici.Resim"
+                             alt="@Alici.AdSoyad">
+                    </div>
+                    <h3 class="profile-username text-center">@Alici.AdSoyad</h3>
+                    <p class="text-muted text-center">@Alici.Firma</p>
+                    <ul class="list-group list-group-unbordered mb-3">
+                        <li class="list-group-item">
+                            <b>Email:</b> @Alici.Mail
+                        </li>
+                        <li class="list-group-item">
+                            <b>Telefon:</b> @Alici.Telefon
+                        </li>
+                        <li class="list-group-item">
+                            <b>Adres:</b> @Alici.Adres
+                        </li>
+                        @if (Alici.KullaniciTip == "Müşteri")
+                        {
+                        <li class="list-group-item">
+                            <b>Temsilci:</b> @Alici.TemsilciAdi
+                        </li>
+                        }
+                        else
+                        {
+                        <li class="list-group-item">
+                            <b>Departman:</b> @Alici.KullaniciTip
+                        </li>
+                        }
+
+                    </ul>
+                    @if (Alici.KullaniciTip == "Müşteri")
+                    {
+                    <a href="/Admin/MusteriDetay?KullaniciID=@Alici.KullaniciID" target="_blank" class="btn btn-primary btn-block"><b>Detay</b></a>
+                    }
+                    else
+                    {
+                    <a href="/Admin/YetkiliDetay?KullaniciID=@Alici.KullaniciID" target="_blank" class="btn btn-primary btn-block"><b>Detay</b></a>
+                    }
+
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+            
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+            @{
+            List<TBLSohbet>
+                sohbet = db.TBLSohbet.Where(x => x.MesajID == Model.MesajID).OrderByDescending(x=> x.SohbetID).ToList();
+                }
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">Cevapla</h3>
+                    </div>
+                    <!-- /.card-header -->
+                   @Html.Action("_SohbetGonder","Admin")
+                    <!-- /.card-body -->
+                </div>
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">Mesajlar</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        @foreach (var s in sohbet)
+                        {
+                        <div class="post">
+                            <div class="user-block">
+                                @{
+                                TBLKullanici k = db.TBLKullanici.Where(x => x.KullaniciID == s.GonderenID).SingleOrDefault();
+                                }
+                                <img class="img-circle img-bordered-sm" src="@k.Resim" alt="user image">
+                                <span class="username">
+                                    <a href="">@k.AdSoyad</a>
+                                    @if (KullaniciID == s.GonderenID)
+                                    {
+                                    <a href="/Admin/SohbetSil?SohbetID=@s.SohbetID&MesajID=@Model.MesajID" class="float-right btn-tool"><i class="fas fa-times"></i></a>
+
+                                    }
+                                </span>
+                                <span class="description">@s.Tarih</span>
+                            </div>
+                            <!-- /.user-block -->
+                            @if (s.Silindi == "Silindi")
+                            {
+                            <p>Gönderen Tarafından Silindi</p>
+                            if (KullaniciID == s.GonderenID)
+                            {
+                            <a href="/Admin/SohbetSil?SohbetID=@s.SohbetID&MesajID=@Model.MesajID" class="link-black text-sm">
+                                <i class="far fa-comments mr-1"></i> Geri Al
+                            </a>
+                            }
+                            }
+                            else
+                            {
+                            <p>@Html.Raw(s.Mesaj)</p>
+                            }
+
+
+                            <p>
+                                @if (KullaniciID == s.GonderenID)
+                                {
+                                   <a href="#" class="link-black text-sm mr-2"><i class="fa fa-check"></i> @s.Okundu</a>
+                                }
+                                else
+                                {
+                                    <a href="#" class="link-black text-sm mr-2"></a>
+
+                                }
+
+                                @if (s.Ek != null)
+                                {
+                                <span class="float-right">
+
+
+                                    <a href="@s.Ek" download class="link-black text-sm">
+                                        <i class="fa fa-download"></i>@s.Ek
+                                    </a>
+                                    <a href="#" class="link-black text-sm mr-2"><i class="fa fa-folder"></i> @s.DosyaTipi</a>
+                                </span>
+                                }
+
+                            </p>
+                        </div>
+                        }
+
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+
+
+                <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</div>

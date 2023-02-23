@@ -1,0 +1,123 @@
+﻿
+@{
+    ViewBag.Title = "MesajListe";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model IEnumerable<Panel.Models.TBLMesaj>
+@using Panel.Models;
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Mesajlar</h3>
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                <i class="fas fa-minus"></i>
+            </button>
+
+        </div>
+    </div>
+    <div class="card-body p-0 table-responsive pad">
+        <table class="table table-striped projects">
+            <thead>
+
+            </thead>
+            <tbody>
+                @foreach (var a in Model)
+                {
+
+                    <tr>
+                        @{
+                            PanelDB db = new PanelDB();
+                            string KullaniciResim = "";
+                            string KullaniciTip = "";
+                            string AdSoyad = "";
+                            string SonMesaj = "";
+                            string Ek = "";
+                            int OkunmamisMesajSayisi = 0;
+                            if (a.GonderenID == Convert.ToInt32(Session["KullaniciID"].ToString()))
+                            {
+                                TBLKullanici k = db.TBLKullanici.Where(x => x.KullaniciID == a.AliciID).SingleOrDefault();
+                                KullaniciResim = k.Resim;
+                                AdSoyad = k.AdSoyad;
+                                KullaniciTip = k.KullaniciTip;
+                            }
+                            else
+                            {
+                                TBLKullanici k = db.TBLKullanici.Where(x => x.KullaniciID == a.GonderenID).SingleOrDefault();
+                                KullaniciResim = k.Resim;
+                                AdSoyad = k.AdSoyad;
+                                KullaniciTip = k.KullaniciTip;
+                            }
+                            List<TBLSohbet> sohbet = db.TBLSohbet.Where(x => x.MesajID == a.MesajID).ToList();
+                            if (sohbet.Count != 0)
+                            {
+                                int sonid = db.TBLSohbet.Where(x => x.MesajID == a.MesajID).Max(x => x.SohbetID);
+                                TBLSohbet s = db.TBLSohbet.Where(x => x.SohbetID == sonid).SingleOrDefault();
+                                SonMesaj = s.Mesaj;
+                                Ek = s.Ek;
+                            }
+                            else
+                            {
+                                SonMesaj = "Mesaj Bulunamadı";
+                            }
+                            OkunmamisMesajSayisi = db.TBLSohbet.Where(x => x.MesajID == a.MesajID && x.Okundu == "İletildi").Count();
+
+                        }
+                        <td>
+                            <img alt="Avatar" class="table-avatar" src="@KullaniciResim">
+                        </td>
+                        <td>
+                            <a href="/Admin/MesajDetay?MesajID=@a.MesajID">
+                                @AdSoyad
+                            </a>
+                            <br />
+                            <small>
+                                @a.Tarih
+                            </small>
+                        </td>
+                        <td>
+                            <a> @a.Konu</a>
+                        </td>
+                        <td class="project_progress">
+
+                            <small>
+                                <p> @SonMesaj</p>
+                            </small>
+                        </td>
+                        <td>
+                            @if (KullaniciTip == "Müşteri")
+                            {
+                                <span class="badge badge-primary">@KullaniciTip</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-warning">@KullaniciTip</span>
+
+                            }
+                        </td>
+                        <td class="project-state">
+
+                            @if (OkunmamisMesajSayisi != 0)
+                            {
+                                <span class="badge badge-danger">@OkunmamisMesajSayisi</span>
+                            }
+
+                        </td>
+                        <td>
+                            @if (Ek != "")
+                            {
+                                <i class="fas fa-paperclip"></i>
+                            }
+                        </td>
+                        <td>
+                            <a href="/Admin/MesajDetay?MesajID=@a.MesajID" class="btn btn-sm btn-primary">Oku</a>
+                        </td>
+                    </tr>
+
+                            }
+
+            </tbody>
+        </table>
+    </div>
+    <!-- /.card-body -->
+</div>

@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewBag.Title = "GelenTalepler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Panel.Models;
+@section Baslik{ Taleplerim }
+@section sitemap{Taleplerim  }
+@section title{ Taleplerim }
+@model IEnumerable<Panel.Models.TBLTalep>
+<div class="card card-outline card-primarycard-outline card-primary">
+    <div class="card-header">
+        <h3 class="card-title">Taleplerim</h3>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <table id="listele1" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th width="1%"></th>
+                    <th width="1%">Talep No</th>
+                    <th width="1%">Hizmet</th>
+                    <th>Firma</th>
+                    <th>Tarih</th>
+                    <th>Durum</th>
+                    <th>Mesaj</th>
+                    <th width="5%">İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var a in Model.OrderByDescending(x=> x.TalepID))
+                {
+                    <tr>
+                        @{
+                            PanelDB db = new PanelDB();
+                            int KullaniciID = Convert.ToInt32(Session["KullaniciID"]);
+                            int MesajSayi = db.TBLTalepMesaj.Where(x => x.TalepID == a.TalepID && x.GonderenID != KullaniciID && x.Okundu == "Okunmadı").Count();
+                        }
+                        <td>
+                            @if (a.Okundu == "Okundu")
+                            {
+                                <small class="badge badge-danger"><i class="far fa-me"></i>Okundu</small>
+                            }
+                            else
+                            {
+                                <small class="badge badge-success"><i class="far fa-me"></i>Yeni Talep</small>
+                            }
+                        </td>
+                        <td>@a.TalepID</td>
+                        <td>@a.HizmetKategoriAdi</td>
+                        <td>@a.FirmaAdi</td>
+                        <td>@a.OlusturulmaTarihi</td>
+                        <td>@a.Durum</td>
+                        <td><small class="badge badge-danger"><i class="far fa-me"></i>@MesajSayi</small></td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="/Admin/TalepDetay?TalepID=@a.TalepID" class="btn btn-primary">Detay</a>
+                                <a href="/Admin/MusteriDetay?KullaniciID=@a.GonderenID" target="_blank" class="btn btn-info">Müşteri</a>
+                            </div>
+                        </td>
+
+                    </tr>
+                            }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th width="1%"></th>
+                    <th width="1%">Talep No</th>
+                    <th width="1%">Hizmet</th>
+                    <th>Firma</th>
+                    <th>Tarih</th>
+                    <th>Durum</th>
+                    <th>Mesaj</th>
+                    <th width="5%">İşlem</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <!-- /.card-body -->
+</div>

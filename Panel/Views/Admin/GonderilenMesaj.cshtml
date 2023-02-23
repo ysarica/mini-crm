@@ -1,0 +1,94 @@
+﻿
+@{
+    ViewBag.Title = "GonderilenMesaj";
+}
+@using Panel.Models;
+@section Baslik{Gönderilen Mesajlar}
+@section sitemap{Gönderilen Mesajlar}
+@section title{Gönderilen Mesajlar}
+@model IEnumerable<Panel.Models.TBLMesaj>
+@{
+            PanelDB db = new PanelDB();
+}
+<!-- Content Wrapper. Contains page content -->
+
+<section class="content">
+    <div class="row">
+        @Html.Action("_MesajYanMenu", "Admin")
+        <!-- /.col -->
+        <div class="col-md-9">
+            <div class="card card-primary card-outline">
+                <div class="card-header">
+                    <h3 class="card-title">Gönderilen Mesajlar</h3>
+
+                    <!-- /.card-tools -->
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body p-0">
+
+                    <div class="table-responsive mailbox-messages">
+                        <table class="table table-hover table-striped">
+                            <tbody>
+                                @if (Model.Count() <= 0)
+                                {
+                                    <tr>
+                                        <td>Mesaj Bulunamadı</td>
+                                    </tr>
+                                }
+                                @foreach (var msj in Model.OrderByDescending(x => x.MesajID))
+                                {
+                                    <tr>
+                                        @{
+                                            int OkunmamisMesaj = db.TBLSohbet.Where(x => x.MesajID == msj.MesajID && x.GonderenID == msj.AliciID && x.Okundu == "Okunmadı").Count();                                        }
+                                        <td class="mailbox-star"><a href="/Admin/MesajDetay?MesajID=@msj.MesajID">@msj.MesajID</a></td>
+                                        @{ TBLKullanici k = db.TBLKullanici.Where(x => x.KullaniciID == msj.AliciID).SingleOrDefault(); }
+                                        <td>
+                                            <div class="user-block">
+                                                <img class="img-circle img-bordered-sm" src="@k.Resim" alt="@k.AdSoyad">
+                                                <span class="username">
+                                                    <a href="/Admin/MesajDetay?MesajID=@msj.MesajID">@k.AdSoyad</a>
+                                                </span>
+                                                <span class="description">@msj.Tarih</span>
+                                            </div>
+                                        </td>
+                                        <td class="mailbox-subject">
+                                            @if (msj.Konu.Length > 38)
+                                            {
+                                                <b>@msj.Konu.Substring(0, 30) ...</b>
+                                            }
+                                            else
+                                            {
+                                                <b>@msj.Konu</b>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (OkunmamisMesaj > 0)
+                                            {
+                                                <small class="badge badge-danger"><i class="far fa-me"></i>@OkunmamisMesaj</small>
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <!-- Yönlendirmeler Pasif-->
+                                                <a href="/Admin/MesajDetay?MesajID=@msj.MesajID" target="_blank" class="btn btn-sm btn-info">Detay</a>
+                                                <a href="/Admin/MesajSil?MesajID=@msj.MesajID&Yol=/Admin/GonderilenMesaj/" class="btn btn-sm btn-danger">Sil</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                            }
+                            </tbody>
+                        </table>
+                        <!-- /.table -->
+                    </div>
+                    <!-- /.mail-box-messages -->
+                </div>
+                <!-- /.card-body -->
+
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->

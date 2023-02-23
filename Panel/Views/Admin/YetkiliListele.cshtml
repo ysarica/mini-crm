@@ -1,0 +1,197 @@
+﻿
+@{
+    ViewBag.Title = "YetkiliListele";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Baslik{ YETKİLİ LİSTE }
+@section sitemap{YETKİLİ LİSTE }
+@section title{YETKİLİ LİSTE}
+@model IEnumerable<Panel.Models.TBLKullanici>
+<div class="card card-outline card-primarycard-outline card-primary">
+    <div class="card-header">
+        <h3 class="card-title">Yetkili Liste & İşlem</h3>
+        <div class="card-tools">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#YetkiliEkle">
+                <i class="fas fa-plus"></i> Yetkili Ekle
+            </button>
+        </div>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <table id="listele1" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th width="1%">ID</th>
+                    <th width="1%">Resim</th>
+                    <th>Ad Soyad</th>
+                    <th>Pozisyon</th>
+                    <th>Mail</th>
+                    <th>Telefon</th>
+                    <th width="5%">İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var a in Model)
+                {
+                    <tr>
+                        <td>@a.KullaniciID</td>
+                        <td><div class="user-block"><img class="img-circle img-bordered-sm" src="@a.Resim" alt="user image"></div></td>
+                        <td>@a.AdSoyad</td>
+                        <td>@a.KullaniciTip</td>
+                        <td>@a.Mail</td>
+                        <td>@a.Telefon</td>
+                        <td><a href="/Admin/YetkiliDetay?KullaniciID=@a.KullaniciID" class="btn btn-warning btn btn-block">Düzen&Detay</a></td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th width="1%">ID</th>
+                    <th width="1%">Resim</th>
+                    <th>Ad Soyad</th>
+                    <th>Pozisyon</th>
+                    <th>Mail</th>
+                    <th>Telefon</th>
+                    <th width="5%">İşlem</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="card-footer"><div class="btn-group"><a href="/Admin/YoneticiEkle" class="btn btn-success btn-sm">Yetkili Ekle</a><a href="/Admin/YetkiEkle" class="btn btn-primary btn-sm">Departman Ekle</a></div></div>
+    <!-- /.card-body -->
+</div>
+<div class="modal fade bd-example-modal-lg" id="YetkiliEkle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal Title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+          
+          @using (Html.BeginForm("YoneticiEkle", "Admin", FormMethod.Post))
+          {
+              if (ViewBag.KHata == 1)
+              {
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h5><i class="icon fas fa-ban"></i> Uyarı!</h5>
+                    @Html.ValidationSummary()
+                </div>
+              }
+
+            <div class="modal-body">
+
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="KullaniciTipID">Yetki Türü</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-id-card"></i></span>
+                            </div>
+                            <select class="form-control custom-select" id="KullaniciTipID" name="KullaniciTipID">
+                                <option selected="" disabled="">Yetki Türünü Seçiniz</option>
+                                @foreach (var a in ViewBag.Yetki)
+                                {
+                                    <option value="@a.YetkiID">@a.YetkiAd</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ad Soyad</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Ad Soyad" id="AdSoyad" name="AdSoyad">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Doğum Tarihi</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                            </div>
+                            <input type="date" class="form-control" placeholder="DogumTarihi" id="DogumTarihi" name="DogumTarihi">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Mail</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Mail (Giriş İçin Kullanılacak)" id="Mail" name="Mail">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Sifre</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-key"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Sifre (Giriş İçin Kullanılacak)" id="Sifre" name="Sifre">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Telefon</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Telefon" id="Telefon" name="Telefon">
+                        </div>
+                        <!-- /.input group -->
+                    </div>
+                    <div class="form-group">
+                        <label>İl</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="İl" id="il" name="il">
+                        </div>
+                        <!-- /.input group -->
+                    </div>
+                    <div class="form-group">
+                        <label>İlçe</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="İlçe" id="il" name="il">
+                        </div>
+                        <!-- /.input group -->
+                    </div>
+                    <div class="form-group">
+                        <label>Adres</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-location-arrow"></i></span>
+                            </div>
+                            <textarea type="text" class="form-control" placeholder="Adres" id="Adres" name="Adres"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Personel Notları</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-comment"></i></span>
+                            </div>
+                            <textarea type="text" class="form-control" placeholder="Personel Notları" id="Aciklama" name="Aciklama"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Çık</button>
+                <button type="submit" class="btn btn-success">Ekle</button>
+            </div>
+          }
+
+        </div>
+    </div>
+</div>

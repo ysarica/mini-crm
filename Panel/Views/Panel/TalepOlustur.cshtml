@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "TalepOlustur";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Baslik{ Talep Oluştur }
+@section sitemap{Talep Oluştur }
+@section title{Talep Oluştur}
+<div class="card card-primary card-outline">
+    <div class="card-header">
+        <h3 class="card-title">Talep Oluştur</h3>
+    </div>
+@using (Html.BeginForm("TalepOlustur", "Panel", FormMethod.Post))
+{
+    <!-- /.card-header -->
+    <div class="card-body">
+
+        <div class="form-group">
+            <label>Talep Tipini Seçiniz:</label>
+            <select class="form-control select2" name="HizmetKategoriID" id="HizmetKategoriID" style="width: 100%;">
+                <option selected="" disabled="">Hizmet Seçiniz:</option>
+                @foreach (var a in ViewBag.HizmetKategori)
+                {
+                    <option value="@a.HKategoriID">@a.KategoriAd</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Hizmeti Alacak Firma İsmi:</label>
+            <input class="form-control" id="FirmaAdi" name="FirmaAdi" placeholder="Hizmeti Alan Firma İsmi:">
+        </div>
+        <div class="form-group">
+            <label>Hizmeti Alacak Ad Soyad:</label>
+            <input class="form-control" id="AdSoyad" name="AdSoyad" placeholder="Hizmeti Alacak Ad Soyad:">
+        </div>
+        <div class="form-group">
+            <label>Telefon Numarası:</label>
+            <input class="form-control" id="Telefon" name="Telefon" placeholder="Telefon Numarası:">
+        </div>
+        <div class="form-group">
+            <label>Mail Adresi:</label>
+            <input class="form-control" id="Mail" name="Mail" placeholder="Mail Adresi:">
+        </div>
+        <div class="form-group">
+            <label>Talebinizi Bize Açıklayın:</label>
+            <textarea id="compose-textarea" name="compose" class="form-control" style="height: 300px"></textarea>
+        </div>
+
+    </div>
+    <div class="card-footer">
+        <div class="float-right">
+            <button type="submit" class="btn btn-primary float-right">Talep Oluştur</button>
+        </div>
+    </div>
+}
+    <!-- /.card-body -->
+</div>
+

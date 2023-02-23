@@ -1,0 +1,109 @@
+﻿@using Panel.Models;
+
+
+
+
+
+
+
+
+<li class="nav-item dropdown">
+    <a class="nav-link" data-toggle="dropdown" href="#">
+        <i class="far fa-comments"></i>
+        <span class="badge badge-danger navbar-badge">@ViewBag.ToplamOkunmamis</span>
+    </a>
+    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+
+
+
+
+        @{
+            PanelDB db = new PanelDB();
+            int a = 0, listele = 4;
+            bool cik = false;
+            string yol= "";
+            int KullaniciID = Convert.ToInt32(Session["KullaniciID"].ToString());
+            TBLKullanici ku = db.TBLKullanici.Where(x => x.KullaniciID == KullaniciID).SingleOrDefault();
+            if (ku.KullaniciTipID==1)
+            {
+                yol = "Admin";
+            }
+            else if(ku.KullaniciTipID != 1 && ku.KullaniciTipID != 0)
+            {
+                yol = "";
+            }
+            else
+            {
+                yol = "Panel";
+            }
+            List<TBLMesaj> Mesajlar = db.TBLMesaj.Where(x => x.GonderenID == KullaniciID && x.Silindi == null || x.AliciID == KullaniciID && x.Silindi == null).ToList();
+            foreach (var m in Mesajlar.OrderByDescending(x => x.MesajID))
+            {
+                if (cik == true)
+                {
+                    break;
+                }
+                List<TBLSohbet> so = db.TBLSohbet.Where(x => x.MesajID == m.MesajID && x.Okundu == "Okunmadı" && x.AliciID == KullaniciID).OrderByDescending(x => x.SohbetID).Take(1).ToList();
+                foreach (var s in so)
+                {
+                    a++;
+                    TBLKullanici k = db.TBLKullanici.Where(x => x.KullaniciID == s.GonderenID).SingleOrDefault();
+
+
+
+                    <a href="/@yol/MesajDetay?MesajID=@s.MesajID" class="dropdown-item">
+                        <!-- Message Start -->
+                        <div class="media">
+                            <img src="@k.Resim" alt="@k.AdSoyad" class="img-size-50 mr-3 img-circle">
+                            <div class="media-body">
+                                <h3 class="dropdown-item-title">
+                                    @k.AdSoyad
+                                    <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
+                                </h3>
+                                @if (s.Mesaj.Length > 23)
+                                {
+                                <p class="text-sm">
+                                    @Html.Raw(s.Mesaj.Substring(0,23)) ...
+                                </p>
+                                }
+                                else
+                                {
+                                <p class="text-sm">
+                                    @Html.Raw(s.Mesaj)
+                                </p>
+                                }
+                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i>@s.Tarih</p>
+                            </div>
+                        </div>
+                        <!-- Message End -->
+                    </a>
+                    <div class="dropdown-divider"></div>
+
+
+
+
+
+
+                    if (a >= listele)
+                    {
+                        cik = true;
+                        break;
+                    }
+                }
+
+            }
+            if (a == 0)
+            {
+                <a href="#" class="dropdown-item dropdown-footer">Okunmamış Mesajınız Yok</a>
+            }
+            else
+            {
+                <a href="/@yol/Mesajlar/" class="dropdown-item dropdown-footer">Okunmamış Tüm Mesajları Gör</a>
+            }
+        }
+
+        
+
+
+    </div>
+</li>

@@ -1,0 +1,540 @@
+﻿
+@{
+    ViewBag.Title = "YetkiliDetay";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Panel.Models;
+@section Baslik{ YETKİLİ DETAY }
+@section sitemap{YETKİLİ DETAY }
+@section title{YETKİLİ DETAY}
+@model Panel.Models.TBLKullanici
+<div class="row">
+    <div class="col-md-3">
+
+        <!-- Profile Image -->
+        <div class="card card-primary card-outline">
+            <div class="card-body box-profile">
+                <div class="text-center">
+                    <img class="profile-user-img img-fluid img-circle" src="@Model.Resim" alt="User profile picture">
+                </div>
+
+                <h3 class="profile-username text-center">@Model.AdSoyad</h3>
+
+                <p class="text-muted text-center">@Model.KullaniciTip</p>
+                <p class="text-muted text-center">@Model.Tarih</p>
+                <hr />
+                <strong><i class="fa fa-phone mr-1"></i> Telefon</strong>
+
+                <p class="text-muted">
+                    @Model.Telefon
+                </p>
+                <hr>
+                <strong><i class="fa fa-envelope mr-1"></i> Mail</strong>
+
+                <p class="text-muted">
+                    @Model.Mail
+                </p>
+                <hr>
+                <strong><i class="fa fa-location-arrow mr-1"></i> Adres</strong>
+
+                <p class="text-muted">
+                    @Model.Adres
+                </p>
+                <hr>
+                <strong><i class="fa fa-comment mr-1"></i> Notlar</strong>
+
+                <p class="text-muted">
+                    @Model.Aciklama
+                </p>
+
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+        <!--İşlemler-->
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">İşlemler</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#hizmetekle">
+                    Bilgileri Güncelle
+                </button>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!--İşlemler-->
+
+    </div>
+
+    <!--Modal Bilgi Güncelle-->
+    <div class="modal fade bd-example-modal-lg" id="hizmetekle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Bilgileri Güncelle</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @using (Html.BeginForm("YetkiliDetay", "Admin", FormMethod.Post))
+            {
+                    @Html.HiddenFor(x => x.KullaniciID)
+
+                    <div class="modal-body">
+
+                        <div class="card-body">
+
+
+                            <div class="form-group">
+                                <label for="KullaniciTipID">Yetki Türü</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-id-card"></i></span>
+                                    </div>
+                                    <select class="form-control custom-select" id="KullaniciTipID" name="KullaniciTipID">
+                                        <option selected="" value="@Model.KullaniciTipID">@Model.KullaniciTip</option>
+                                        @foreach (var a in ViewBag.Yetki)
+                                        {
+                                            <option value="@a.YetkiID">@a.YetkiAd</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Ad Soyad</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" placeholder="Ad Soyad" id="AdSoyad" name="AdSoyad" value="@Model.AdSoyad">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Doğum Tarihi</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                    <input type="date" class="form-control" placeholder="DogumTarihi" id="DogumTarihi" name="DogumTarihi" value="@Model.DogumTarihi">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Mail</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" placeholder="Mail (Giriş İçin Kullanılacak)" id="Mail" name="Mail" value="@Model.Mail">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Sifre</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-key"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" placeholder="Sifre (Giriş İçin Kullanılacak)" id="Sifre" name="Sifre" value="@Model.Sifre">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Telefon</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" placeholder="Telefon" id="Telefon" name="Telefon" value="@Model.Telefon">
+                                </div>
+                                <!-- /.input group -->
+                            </div>
+                            <div class="form-group">
+                                <label>İl</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-location-arrow"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" placeholder="İl" id="il" name="il" value="@Model.il">
+                                </div>
+                                <!-- /.input group -->
+                            </div>
+                            <div class="form-group">
+                                <label>Telefon</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-location-arrow"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" placeholder="İlçe" id="ilce" name="ilce" value="@Model.ilce">
+                                </div>
+                                <!-- /.input group -->
+                            </div>
+                            <div class="form-group">
+                                <label>Adres</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-location-arrow"></i></span>
+                                    </div>
+                                    <textarea type="text" class="form-control" placeholder="Adres" id="Adres" name="Adres">@Model.Adres</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Personel Notları</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-comment"></i></span>
+                                    </div>
+                                    <textarea type="text" class="form-control" placeholder="Personel Notları" id="Aciklama" name="Aciklama">@Model.Aciklama</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Çık</button>
+                        <button type="submit" class="btn btn-warning">Güncelle</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <!-- Temsilcilikler -->
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">Hizmet Temsilcilikler</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                </div>
+                <!-- /.card-tools -->
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+
+                @Html.Action("_YetkiliTemsilcilikleri", "Admin")
+
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /Temsilcilikler -->
+        <!-- Temsilcilikler -->
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">Müşteri Temsilcilikler</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                </div>
+                <!-- /.card-tools -->
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <section class="content">
+                    @{ PanelDB db = new PanelDB();
+                       List<TBLKullanici> MüsteriTemsilcilik = db.TBLKullanici.Where(x => x.TemsilciID == Model.KullaniciID).ToList();
+
+                    }
+                    <div class="row d-flex align-items-stretch">
+                        @if (MüsteriTemsilcilik.Count() == 0)
+                        {
+                            <p>Herhangi Bir Temsilcilik Bulunamadı.</p>
+                        }
+                        @foreach (var a in MüsteriTemsilcilik.OrderByDescending(x => x.KullaniciID))
+                        {
+
+                            <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
+                              
+                                <div class="card bg-light">
+                                    <div class="card-header text-muted border-bottom-0">
+                                        Firma:@a.Firma
+                                    </div>
+                                    <div class="card-body pt-0">
+                                        <div class="row">
+                                            <div class="col-7">
+                                                <h2 class="lead"><b>@a.AdSoyad</b></h2>
+                                                <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                    <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> Telefon: @a.Telefon</li>
+                                                    <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> Mail: @a.Mail</li>
+                                                    <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> İl/ilçe:@a.il / @a.ilce </li>
+                                                    <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> Adres:@a.Adres </li>
+                                                    <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> Doğum Tarihi:@a.DogumTarihi </li>
+
+
+                                                </ul>
+                                            </div>
+                                            <div class="col-5 text-center">
+                                                <img src="@a.Resim" alt="" class="img-circle img-fluid">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="text-right">
+                                            
+                                            <a href="/Admin/MusteriDetay?KullaniciID=@a.KullaniciID" target="_blank" class="btn btn-sm btn-primary">
+                                                Müşteri Detay
+                                            </a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                    }
+
+                    </div>
+
+                </section>
+
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /Temsilcilikler -->
+        <!-- Mesajlar -->
+        @{
+      
+            List<TBLMesaj> gonderilenmesaj = db.TBLMesaj.Where(x => x.GonderenID == Model.KullaniciID).ToList();
+            List<TBLMesaj> alinanmesaj = db.TBLMesaj.Where(x => x.AliciID == Model.KullaniciID).ToList();
+
+        }
+        <div class="card">
+            <div class="card-header p-2">
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><a class="nav-link active" href="#gelenmesaj" data-toggle="tab">Gelen Mesajlar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#gonderilenmesaj" data-toggle="tab">Gönderilen Mesajlar</a></li>
+                </ul>
+
+            </div><!-- /.card-header -->
+            <div class="card-body" style="padding:0px;">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="gelenmesaj">
+
+                        <div class="table-responsive mailbox-messages">
+                            <table class="table table-hover table-striped">
+                                <tbody>
+                                    @if (alinanmesaj.Count() == 0)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <p>Mesaj Bulunamadı.</p>
+                                            </td>
+                                        </tr>
+                                    }
+                                    @foreach (var m in alinanmesaj)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @m.MesajID
+                                            </td>
+                                            <td class="mailbox-name"><a href="read-mail.html">@m.GonderenAdi</a></td>
+                                            <td class="mailbox-subject">
+                                                @m.Konu
+                                            </td>
+                                            <td class="mailbox-date">@m.Tarih</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-@m.MesajID">
+                                                        Detay
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <!-- /.table -->
+                            @foreach (var b in alinanmesaj)
+                            {
+
+                                <div class="modal fade bd-example-modal-lg" id="modal-@b.MesajID" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel"> Sohbet</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                @{ List<TBLSohbet> sohbet = db.TBLSohbet.Where(x => x.MesajID == b.MesajID).ToList();}
+                                                @foreach (var s in sohbet)
+                                                {
+
+                                                    <div class="post">
+                                                        @{
+                                                            TBLKullanici k = db.TBLKullanici.Where(x => x.KullaniciID == s.GonderenID).SingleOrDefault();
+                                                        }
+                                                        <div class="user-block">
+                                                            <img class="img-circle img-bordered-sm" src="@k.Resim" alt="@k.AdSoyad">
+                                                            <span class="username">
+                                                                <a href="#">@s.GonderenAd</a>
+                                                                <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
+                                                            </span>
+                                                            <span class="description">@s.Tarih</span>
+                                                        </div>
+                                                        <!-- /.user-block -->
+                                                        <p>
+                                                            @Html.Raw(s.Mesaj)
+                                                        </p>
+                                                        @if (s.Ek != null)
+                                                        {
+                                                            <p>
+                                                                <ul class="mailbox-attachments d-flex align-items-stretch clearfix">
+                                                                  
+                                                                    <li>
+                                                                        <span class="mailbox-attachment-icon"><i class="far fa-file-word"></i></span>
+                                                                        <div class="mailbox-attachment-info">
+                                                                            <a href="#" class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> @s.Ek - @s.DosyaTipi</a>
+                                                                            <span class="mailbox-attachment-size clearfix mt-1">
+
+                                                                                <a href="@s.Ek" class="btn btn-default btn-sm float-right" download="@s.Ek"><i class="fas fa-cloud-download-alt"></i></a>
+                                                                            </span>
+                                                                        </div>
+                                                                    </li>
+                                                                    
+                                                                </ul>
+                                                            </p> <br />}
+                                                        <p>
+                                                          
+                                                            <span class="float-right">
+                                                                <a  class="link-black text-sm">
+                                                                    <i class="fa fa-check"></i> @s.Okundu
+                                                                </a>
+                                                            </span>
+                                                        </p>
+
+                                                    </div>
+                                                            }
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Çıkış</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                                            }
+                        </div>
+
+
+
+                    </div>
+                    <!-- /.tab-pane -->
+                    <div class="tab-pane" id="gonderilenmesaj">
+
+                        <div class="table-responsive mailbox-messages">
+                            <table class="table table-hover table-striped">
+                                <tbody>
+                                    @if (gonderilenmesaj.Count() == 0)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <p>Mesaj Bulunamadı.</p>
+                                            </td>
+                                        </tr>
+                                    }
+                                    @foreach (var m in gonderilenmesaj)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @m.MesajID
+                                            </td>
+                                            <td class="mailbox-name"><a href="read-mail.html">@m.AliciAdi</a></td>
+                                            <td class="mailbox-subject">
+                                                @m.Konu
+                                            </td>
+                                            <td class="mailbox-date">@m.Tarih</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-@m.MesajID">
+                                                        Detay
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <!-- /.table -->
+                            @foreach (var b in gonderilenmesaj)
+                            {
+
+                                <div class="modal fade bd-example-modal-lg" id="modal-@b.MesajID" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel"> Sohbet</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                @{ List<TBLSohbet> sohbet = db.TBLSohbet.Where(x => x.MesajID == b.MesajID).ToList();}
+                                                @foreach (var s in sohbet)
+                                                {
+
+                                                    <div class="post">
+                                                        @{
+                                                            TBLKullanici k = db.TBLKullanici.Where(x => x.KullaniciID == s.GonderenID).SingleOrDefault();
+                                                        }
+                                                        <div class="user-block">
+                                                            <img class="img-circle img-bordered-sm" src="@k.Resim" alt="@k.AdSoyad">
+                                                            <span class="username">
+                                                                <a href="#">@s.GonderenAd</a>
+                                                                <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
+                                                            </span>
+                                                            <span class="description">@s.Tarih</span>
+                                                        </div>
+                                                        <!-- /.user-block -->
+                                                        <p>
+                                                            @Html.Raw(s.Mesaj)
+                                                        </p>
+                                                        @if (s.Ek != null)
+                                                        {
+                                                            <p>
+                                                                <ul class="mailbox-attachments d-flex align-items-stretch clearfix">
+
+                                                                    <li>
+                                                                        <span class="mailbox-attachment-icon"><i class="far fa-file-word"></i></span>
+                                                                        <div class="mailbox-attachment-info">
+                                                                            <a href="#" class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> @s.Ek - @s.DosyaTipi</a>
+                                                                            <span class="mailbox-attachment-size clearfix mt-1">
+
+                                                                                <a href="@s.Ek" class="btn btn-default btn-sm float-right" download="@s.Ek"><i class="fas fa-cloud-download-alt"></i></a>
+                                                                            </span>
+                                                                        </div>
+                                                                    </li>
+
+                                                                </ul>
+                                                            </p> <br />}
+                                                        <p>
+
+                                                            <span class="float-right">
+                                                                <a class="link-black text-sm">
+                                                                    <i class="fa fa-check"></i> @s.Okundu
+                                                                </a>
+                                                            </span>
+                                                        </p>
+
+                                                    </div>
+                                                            }
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Çıkış</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                                            }
+                        </div>
+                    </div>
+                    <!-- /.tab-pane -->
+
+                </div>
+                <!-- /.tab-content -->
+            </div><!-- /.card-body -->
+        </div>
+
+    </div>
+</div>

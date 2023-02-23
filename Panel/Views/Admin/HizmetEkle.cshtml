@@ -1,0 +1,174 @@
+﻿
+@{
+    ViewBag.Title = "HizmetEkle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Baslik{ Hizmet Ekle }
+@section sitemap{Hizmet Ekle }
+@section title{Hizmet Ekle}
+@model Panel.Models.TBLHizmet
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-outline card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Hizmet Ekle</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+                <!-- /.card-tools -->
+            </div>
+            <!-- /.card-header -->
+            @using (Html.BeginForm("HizmetEkle", "Admin", FormMethod.Post))
+            {
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Müşteri Seçiniz</label>
+                        <select class="form-control select2" name="MüsteriID" id="MüsteriID" style="width: 100%;">
+                            <option selected="" disabled="">Müşteri Seçiniz</option>
+                            @foreach (var a in ViewBag.Musteriler)
+                            {
+                                <option value="@a.KullaniciID">@a.Firma - @a.AdSoyad</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Hizmet Tipi Seçiniz</label>
+                        <select class="form-control select2" name="HizmetKategoriID" id="HizmetKategoriID" style="width: 100%;">
+                            <option selected="" disabled="">Hizmet Tipi Seçiniz</option>
+                            @foreach (var a in ViewBag.Hizmetler)
+                            {
+                                <option value="@a.HKategoriID">@a.KategoriAd</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Temsilci Seçiniz</label>
+                        <select class="form-control select2" name="TemsilciID" id="HizmetKategoriID" style="width: 100%;">
+                            <option selected="" disabled="">Temsilci Seçiniz</option>
+                            @foreach (var a in ViewBag.Temsilci)
+                            {
+                                <option value="@a.KullaniciID">@a.KullaniciTip - @a.AdSoyad </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Hizmet Tanımı</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-briefcase"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Hizmet Tanimi" id="HizmetAdi" name="HizmetAdi">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>FTP Sunucu</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-h-square"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Sadece Website İçin Gerekli" id="FTPSunucu" name="FTPSunucu">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>FTP Kullanıcı Adı</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-id-badge"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Sadece Website İçin Gerekli" id="FTPKullaniciAdi" name="FTPKullaniciAdi">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>FTP Şifre</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-key"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Sadece Website İçin Gerekli" id="FTPSifre" name="FTPSifre">
+                        </div>
+                        <!-- /.input group -->
+                    </div>
+                    <div class="form-group">
+                        <label>Hizmet Başlangıç Tarihi(Sadece Website İçin Gerekli)</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                            </div>
+                            <input type="date" class="form-control" placeholder="Sadece Website İçin Gerekli" id="BaslangicTarihi" name="BaslangicTarihi">
+                        </div>
+                        <!-- /.input group -->
+                    </div>
+                    <div class="form-group">
+                        <label>Hizmet Bitiş Tarihi(Sadece Website İçin Gerekli)</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                            </div>
+                            <input type="date" class="form-control" placeholder="Sadece Website İçin Gerekli" id="BitisTarihi" name="BitisTarihi">
+                        </div>
+                        <!-- /.input group -->
+                    </div>
+                    <div class="form-group">
+                        <label>Hizmete Başlanma Tarihi</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                            </div>
+                            <input type="date" class="form-control" placeholder="Hizmete Başlanma Tarihi" id="HizmetBaslangicTarihi" name="HizmetBaslangicTarihi">
+                        </div>
+                        <!-- /.input group -->
+                    </div>
+                    <div class="form-group">
+                        <label>Hizmeti Tahmini Bitirme Tarihi</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                            </div>
+                            <input type="date" class="form-control" placeholder="Hizmeti Tahmini Bitirme Tarihi" id="HizmetBitisTarihi" name="HizmetBitisTarihi">
+                        </div>
+                        <!-- /.input group -->
+                    </div>
+                    <div class="form-group">
+                        <label>Hizmet Bedeli</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><b>₺</b></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Hizmet Tutarı" id="HizmetBedeli" name="HizmetBedeli">
+                        </div>
+                        <!-- /.input group -->
+                    </div>
+                    <div class="form-group">
+                        <label>Ödeme Durum</label>
+                        <select class="form-control select2" name="OdemeDurum" id="OdemeDurum" style="width: 100%;">
+                            <option selected="" disabled="">Ödeme Durumu Giriniz</option>
+
+                            <option value="Ödendi">Ödendi</option>
+                            <option value="Ödenmedi">Ödenmedi</option>
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Müşteri Notları</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-comment"></i></span>
+                            </div>
+                            <textarea type="text" class="form-control" placeholder="Müşteri Notları" id="Aciklama" name="Aciklama"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-info">Ekle</button>
+                    <a href="/Admin/MusteriListe" class="btn btn-default float-right">Geri Dön</a>
+                </div>
+            }
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+
+</div>

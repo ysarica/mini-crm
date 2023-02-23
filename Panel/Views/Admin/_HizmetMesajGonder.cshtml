@@ -1,0 +1,124 @@
+﻿@model Panel.Models.TBLHizmetMesaj
+@using Panel.Models;
+<div class="card card-primary cardutline direct-chat direct-chat-primary card-outline">
+    <div class="card-header">
+        <h3 class="card-title">Mesaj Gönder</h3>
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        @{
+            int KullaniciID = Convert.ToInt32(Session["KullaniciID"].ToString());
+            int HizmetID = Convert.ToInt32(ViewBag.HizmetID);
+            PanelDB db = new PanelDB();
+            List<TBLHizmetMesaj> mesaj = db.TBLHizmetMesaj.Where(x => x.HizmetID == HizmetID).ToList();
+        }
+        <!-- Conversations are loaded here -->
+        <div class="direct-chat-messages">
+            @if (mesaj.Count <= 0)
+            {
+                <div class="direct-chat-msg">
+
+                    <div class="direct-chat-infos clearfix">
+                        <span class="direct-chat-name float-left">SRC PANEL</span>
+                        <span class="direct-chat-timestamp float-right">@DateTime.Now.ToShortDateString()</span>
+                    </div>
+
+                    <img class="direct-chat-img" src="~/Resimler/Kullanici/resim-yok.jpg" alt="Sistem">
+                    <div class="direct-chat-text">
+                        Hizmetinizle İlgili Buradan Bizimle İletişim Kurabilirsiniz.
+                    </div>
+                </div>
+            }
+            else
+            {
+                foreach (var m in mesaj)
+                {
+                    TBLHizmet h = db.TBLHizmet.Where(x => x.HizmetID == HizmetID).SingleOrDefault();
+
+                    if (m.GonderenID == KullaniciID)
+                    {
+                        <div class="direct-chat-msg right">
+                            @{
+                                TBLKullanici k = db.TBLKullanici.Where(x => x.KullaniciID == KullaniciID).SingleOrDefault();
+                            }
+                            <div class="direct-chat-infos clearfix">
+                                <span class="direct-chat-name float-right">@k.AdSoyad</span>
+                                <span class="direct-chat-timestamp float-left">@m.Tarih</span>
+                            </div>
+                            <img class="direct-chat-img" src="@k.Resim" alt="@k.AdSoyad">
+                            <div class="direct-chat-text">
+                                @m.Mesaj
+                                @if (m.Okundu == "Görüldü")
+                                {
+                                    <span>-</span> <i class="fa fa-check" aria-hidden="true"></i>
+                                }
+                            </div>
+                            @if (m.Ek != "" && m.Ek != null)
+                        {
+                                <a href="@m.Ek" download class="btn btn-default btn-sm">
+                                    <i class="fa fa-download"></i> Dosyayı İndir
+                                </a>
+
+                            }
+                        </div>
+                                }
+                                else
+                                {
+                                    <div class="direct-chat-msg">
+                                        @{
+                                            TBLKullanici t = db.TBLKullanici.Where(x => x.KullaniciID == h.TemsilciID).SingleOrDefault();
+                                        }
+                                        <div class="direct-chat-infos clearfix">
+                                            <span class="direct-chat-name float-left">@t.AdSoyad</span>
+                                            <span class="direct-chat-timestamp float-right">@m.Tarih</span>
+                                        </div>
+
+                                        <img class="direct-chat-img" src="@t.Resim" alt="@t.AdSoyad">
+                                        <div class="direct-chat-text">
+                                            @m.Mesaj
+                                        </div>
+                                        @if (m.Ek != "" && m.Ek != null)
+                                        {
+                                            <a href="@m.Ek" download class="btn btn-default btn-sm">
+                                                <i class="fa fa-download"></i> Dosyayı İndir
+                                            </a>
+                                        }
+                                    </div>
+                                                    }
+
+
+                                                }
+
+                                            }
+        </div>
+        <!--/.direct-chat-messages-->
+        <!-- Contacts are loaded here -->
+        <!-- /.direct-chat-pane -->
+    </div>
+    <!-- /.card-body -->
+    @using (Html.BeginForm("_HizmetMesajGonder", "Admin", FormMethod.Post, new { @class = "form-horizontal", @id = "form_sample_1", @enctype = "multipart/form-data" }))
+    {
+        <div class="card-footer">
+            <form action="#" method="post">
+                <div class="input-group">
+                    <input type="text" name="Mesaj" placeholder="Mesajınız..." class="form-control">
+                    <div class="btn btn-default btn-file">
+                        <i class="fas fa-paperclip"></i>
+                        <input type="file" name="attachment" id="attachment">
+                    </div>
+                    <span class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Gönder</button>
+
+                    </span>
+
+                </div>
+            </form>
+        </div>
+    }
+    <!-- /.card-footer-->
+</div>

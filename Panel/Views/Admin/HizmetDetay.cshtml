@@ -1,0 +1,810 @@
+﻿
+@{
+    ViewBag.Title = "HizmetDetay";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Panel.Models;
+@section Baslik{ Hizmet Detay }
+@section sitemap{Hizmet Detay }
+@section title{Hizmet Detay}
+@model Panel.Models.TBLHizmet
+@{
+            PanelDB db = new PanelDB();
+
+            List<TBLKullanici> musteri = db.TBLKullanici.Where(x => x.KullaniciID == Model.MüsteriID).ToList();
+            List<TBLKullanici> temsilci = db.TBLKullanici.Where(x => x.KullaniciID == Model.TemsilciID).ToList();
+
+}
+<div class="row">
+    <div class="col-lg-3">
+        @Html.Action("_HizmetMesajGonder","Admin")
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">Müşteri Bilgileri</h3>
+                <div class="card-tools">
+                    <a href="/Admin/MusteriDetay?KullaniciID=@Model.MüsteriID" class="btn btn-primary btn-sm" target="_blank">Detay</a>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body box-profile">
+                @foreach (var m in musteri)
+                {
+                <div class="text-center">
+                    <img class="profile-user-img img-fluid img-circle" src="@m.Resim" alt="User profile picture">
+                </div>
+
+                <h3 class="profile-username text-center">@m.Firma</h3>
+
+                <p class="text-muted text-center">@m.AdSoyad</p>
+                <p class="text-muted text-center">@m.Tarih</p>
+                <hr>
+                <strong><i class="fa fa-phone mr-1"></i> Telefon</strong>
+
+                <p class="text-muted">
+                    @m.Telefon
+                </p>
+                <hr>
+                <strong><i class="fa fa-envelope mr-1"></i> Mail</strong>
+
+                <p class="text-muted">
+                    @m.Mail
+                </p>
+                <hr>
+                <strong><i class="fa fa-location-arrow mr-1"></i> Adres</strong>
+
+                <p class="text-muted">
+                    @m.Adres
+                </p>
+                <hr>
+                <strong><i class="fa fa-comment mr-1"></i> Notlar</strong>
+
+                <p class="text-muted">
+                    @m.Aciklama
+                </p>
+                }
+
+
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">Temsilci Bilgileri</h3>
+                <div class="card-tools">
+                    <a href="/Admin/YetkiliDetay?KullaniciID=@Model.TemsilciID" class="btn btn-primary btn-sm" target="_blank">Detay</a>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body box-profile">
+                @foreach (var m in temsilci)
+                {
+                <div class="text-center">
+                    <img class="profile-user-img img-fluid img-circle" src="@m.Resim" alt="User profile picture">
+                </div>
+
+                <h3 class="profile-username text-center">@m.AdSoyad</h3>
+
+                <p class="text-muted text-center">@m.KullaniciTip</p>
+                <p class="text-muted text-center">@m.Tarih</p>
+                <hr>
+                <strong><i class="fa fa-phone mr-1"></i> Telefon</strong>
+
+                <p class="text-muted">
+                    @m.Telefon
+                </p>
+                <hr>
+                <strong><i class="fa fa-envelope mr-1"></i> Mail</strong>
+
+                <p class="text-muted">
+                    @m.Mail
+                </p>
+                <hr>
+                <strong><i class="fa fa-location-arrow mr-1"></i> Adres</strong>
+
+                <p class="text-muted">
+                    @m.Adres
+                </p>
+                <hr>
+                <strong><i class="fa fa-comment mr-1"></i> Notlar</strong>
+
+                <p class="text-muted">
+                    @m.Aciklama
+                </p>
+                }
+
+
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">Hizmet Bilgileri</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-warning btn-block" data-toggle="modal" data-target="#HizmetGüncelle">
+                        <i class="fas fa-pencil"></i>Hizmeti Güncelle
+                    </button>
+                </div>
+            </div>
+
+            <!-- /.card-header -->
+            <div class="card-body">
+                <h3 class="profile-username text-center">@Model.HizmetAdi</h3>
+                <p class="text-muted text-center">@Model.HizmetKategoriAd</p>
+                <p class="text-muted text-center">@Model.MüsteriAdi - @Model.Firma</p>
+                <p class="text-muted text-center">Hizmet Durum:@Model.HizmetDurum</p>
+                <hr>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <strong><i class="fa fa-address-card"></i> Müşteri Adı</strong>
+                        <p class="text-muted">
+                            @Model.MüsteriID - @Model.MüsteriAdi
+                        </p>
+                        <hr>
+                        <strong><i class="fa fa-user-circle"></i> Temsilci</strong>
+                        <p class="text-muted">
+                            @Model.TemsilciID - @Model.TemsilciAdi
+                        </p>
+                        <hr>
+                        <strong><i class="fa fa-calendar"></i> Hizmet Süresi</strong>
+                        <p class="text-muted">
+                            Başlangıç(@Model.HizmetBaslangicTarihi)   -Bitis(@Model.HizmetBitisTarihi)
+                        </p>
+                        <hr>
+                        @if (Model.FTPSunucu != "" && Model.FTPSunucu != null)
+                        {
+
+                        <strong><i class="fa fa-check-square"></i> FTP Sunucu</strong>
+                        <p class="text-muted">
+                            @Model.FTPSunucu
+                        </p>
+                        <hr>
+                        }
+                        @if (Model.FTPSifre != "" && Model.FTPSifre != null)
+                        {
+
+                        <strong><i class="fa fa-check-square"></i> FTP Sifre</strong>
+                        <p class="text-muted">
+                            @Model.FTPSifre
+                        </p>
+                        <hr>
+                        }
+                    </div>
+                    <div class="col-lg-4">
+                        <strong><i class="fa fa-star"></i> Hizmet Adı</strong>
+                        <p class="text-muted">
+                            @Model.HizmetID - @Model.HizmetAdi
+                        </p>
+                        <hr>
+                        <strong><i class="fa fa-calendar"></i> Hizmet Kayıt Tarihi</strong>
+                        <p class="text-muted">
+                            @Model.IslemTarihi
+                        </p>
+                        <hr>
+
+                        <strong><i class="fa fa-check"></i> Goruldu</strong>
+                        <p class="text-muted">
+                            @Model.GorulduDurum
+                        </p>
+                        <hr>
+                        @if (Model.FTPKullaniciAdi != "" && Model.FTPKullaniciAdi != null)
+                        {
+
+                        <strong><i class="fa fa-check-square"></i> FTP Kullanıcı Adı</strong>
+                        <p class="text-muted">
+                            @Model.FTPKullaniciAdi
+                        </p>                <hr>
+                        }
+                        @if (Model.HizmetBaslangicTarihi != "" && Model.HizmetBaslangicTarihi != null)
+                        {
+
+                        <strong><i class="fa fa-calendar"></i> Hizmet Baslangic Tarihi</strong>
+                        <p class="text-muted">
+                            @Model.HizmetBaslangicTarihi
+                        </p>
+                        <hr>
+                        }
+                    </div>
+                    <div class="col-lg-4">
+                        <strong><i class="fa fa-star"></i> Hizmet Kategorisi</strong>
+                        <p class="text-muted">
+                            @Model.HizmetKategoriID - @Model.HizmetKategoriAd
+                        </p>
+                        <hr>
+                        <strong><i class="fa fa-credit-card"></i> Hizmet Bedeli</strong>
+                        <p class="text-muted">
+                            @Model.HizmetBedeli TL
+                        </p>
+                        <hr>
+                        <strong><i class="fa fa-check"></i><i class="fa fa-credit-card"></i> Odeme Durumu</strong>
+                        <p class="text-muted">
+                            @Model.OdemeDurum
+                        </p>
+
+
+                        @if (Model.OdemeDurum == "Ödendi")
+                        {
+                        <hr>
+                        <strong><i class="fa fa-calendar"></i> Ödeme Tarihi</strong>
+                        <p class="text-muted">
+                            @Model.OdemeTarihi
+                        </p>
+                        <hr>
+                        }
+                        @if (Model.HizmetBitisTarihi != "" && Model.HizmetBitisTarihi != null)
+                        {
+
+                        <strong><i class="fa fa-calendar"></i> Hizmet Bitis Tarihi</strong>
+                        <p class="text-muted">
+                            @Model.HizmetBitisTarihi
+                        </p>
+                        <hr>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-lg-12">
+                    <strong><i class="fa fa-flag"></i> Açıklama</strong>
+                    <p class="text-muted">
+                        @Model.Aciklama
+                    </p>
+                    <hr>
+                </div>
+
+
+                <!--Burası İçerisi-->
+
+            </div>
+            <!-- /.card-body -->
+        </div>
+      
+
+            
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">Fatura</h3>
+
+                    </div>
+
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        @{  TBLFatura fatura = db.TBLFatura.Where(x => x.HizmetID == Model.HizmetID).SingleOrDefault();
+                    TBLKullanici fmusteri = db.TBLKullanici.Where(x => x.KullaniciID == fatura.KullaniciID).SingleOrDefault();
+
+                        }
+
+                        <div class="invoice p-3 mb-3">
+                            <!-- title row -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <h4>
+                                        <i class="fas fa-globe"></i> SRC MEDİA, Frealancer
+                                        <small class="float-right">Tarih: @Model.IslemTarihi</small>
+                                    </h4>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- info row -->
+                            <div class="row invoice-info">
+                                <div class="col-sm-4 invoice-col">
+                                    Hizmet Veren
+                                    <address>
+                                        @* Burası Dinamik Olacak *@
+                                        <strong>Src Media</strong><br>
+                                        www.srcmedia.com<br>
+                                        Pendik İstanbul, 34000<br>
+                                        Telefon: (531) 957-4200<br>
+                                        Email: info@srcmedia.com
+                                    </address>
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-sm-4 invoice-col">
+                                    Hizmet Alan
+                                    <address>
+                                        <strong>@fatura.KullaniciAd - @fatura.FirmaAdi</strong><br>
+                                        @fmusteri.Adres<br>
+                                        Telefon:@fmusteri.Telefon<br>
+                                        Email: @fmusteri.Mail
+                                    </address>
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-sm-4 invoice-col">
+                                    <b>Fatura No #@fatura.FaturaID</b><br>
+                                    <b>Hizmet No:</b> @fatura.HizmetID<br>
+                                    <b>Durum:</b> @fatura.OdemeDurum<br>
+                                    @if (fatura.OdemeTarih != "")
+                            {
+                                <b>Ödeme Tarihi:</b>@fatura.OdemeTarih
+                            }
+                                    <b>Hizmet:</b> @fatura.HizmetAdi<br>
+                                    <b>Hizmet Tipi:</b>@fatura.HizmetKategoriAdi
+
+
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+                            <!-- Table row -->
+                            <div class="row">
+                                <div class="col-12 table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>H. No</th>
+                                                <th>Hizmet</th>
+                                                <th>Kategori</th>
+                                                <th>Firma Adı</th>
+                                                <th>Toplam Tutar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>@fatura.HizmetID </td>
+                                                <td>@fatura.HizmetAdi</td>
+                                                <td>@fatura.HizmetKategoriAdi</td>
+                                                <td>@fatura.FirmaAdi - @fatura.KullaniciAd</td>
+                                                <td>@fatura.HizmetBedeli ₺</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+
+                            <div class="row">
+                                <!-- accepted payments column -->
+                                <div class="col-6">
+                                    <p class="lead">Alınan Ödeme:</p>
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            @{
+                                        int ToplamAlınan = 0;
+                                        List<TBLOdeme> odeme = db.TBLOdeme.Where(x => x.HizmetID == fatura.HizmetID).ToList();
+                                        foreach (var item in odeme)
+                                        {
+                                            ToplamAlınan = ToplamAlınan + Convert.ToInt32(item.AlınanOdeme);
+                                        }
+                                            }
+                                            <tbody>
+                                                @foreach (var o in odeme)
+                                        {
+                                            <tr>
+                                                <td>@o.OdemeYontem</td>
+                                                <td>+@o.AlınanOdeme ₺</td>
+
+                                            </tr>
+                                        }
+
+                                                <tr>
+                                                    <th>Toplam Alınan</th>
+                                                    <td>@ToplamAlınan ₺</td>
+                                                </tr>
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-6">
+                                    <p class="lead">Ücret</p>
+
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <th style="width:50%">Hizmet Bedeli:</th>
+                                                    <td>@fatura.HizmetBedeli ₺</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Kalan Tutar</th>
+                                                    <td>@fatura.KalanTutar ₺</td>
+                                                </tr>
+                                                @if (fatura.OdemeTip!="")
+                                        {
+                                            <tr>
+                                                <th>Ödeme Tip:</th>
+                                                <td>@fatura.OdemeTip</td>
+                                            </tr>
+                                        }
+                                                @if (fatura.OdemeYontem != "")
+                                        {
+                                            <tr>
+                                                <th>Ödeme Yöntem:</th>
+                                                <td>@fatura.OdemeYontem</td>
+                                            </tr>
+                                        }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+                            <!-- this row will not appear when printing -->
+                            <div class="row no-print">
+                                <div class="col-12">
+                                    @if (Convert.ToInt32(fatura.KalanTutar) <= 0)
+                                    {
+                                        <button type="button" class="btn btn-success float-right disabled" data-toggle="modal" data-target="">
+                                            <i class="far fa-credit-card"></i> Ödeme Ekle
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#OdemeEkle">
+                                            <i class="far fa-credit-card"></i> Ödeme Ekle
+                                        </button>
+                                    }
+                                    
+
+                                    <button type="button" class="btn btn-primary float-right disabled" style="margin-right: 5px;">
+                                        <i class="fas fa-download"></i> PDF İndir
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">Ödeme Bildirimleri</h3>
+            </div>
+            <!-- /.card-header -->
+            @{ 
+                List<TBLOdemeBildirim> odemebildirim = db.TBLOdemeBildirim.Where(x => x.HizmetID == Model.HizmetID).ToList();
+            }
+            <div class="card-body">
+                <div class="row d-flex align-items-stretch">
+                    @foreach (var o in odemebildirim)
+                    {
+                        TBLKullanici k = db.TBLKullanici.Where(x => x.KullaniciID == o.MusteriID).SingleOrDefault();
+                        <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
+                          
+                            <div class="card bg-light">
+                                @if (o.Durum == "Onaylanma Sürecinde")
+                                {
+                                     <div class="ribbon-wrapper">
+                                        <div class="ribbon bg-warning">
+                                            @o.Durum
+                                        </div>
+                                    </div>
+                                }
+                                else if (o.Durum == "Onaylandı")
+                                {
+                                    <div class="ribbon-wrapper">
+                                        <div class="ribbon bg-success">
+                                            @o.Durum
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="ribbon-wrapper">
+                                        <div class="ribbon bg-danger">
+                                            @o.Durum
+                                        </div>
+                                    </div>
+                                }
+                                <div class="card-header text-muted border-bottom-0">
+                                    @o.OdemeBanka
+                                </div>
+                                <div class="card-body pt-0">
+                                    <div class="row">
+                                        <div class="col-7">
+                                            <h2 class="lead"><b>@o.AdSoyad</b></h2>
+                                            <p class="text-muted text-sm"><b>@o.Tarih</b></p>
+                                            <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                <li class="small"><span class="fa-li"><i class="fa fa-bullseye"></i></span>Ödeme Yöntem: @o.OdemeYontem</li>
+                                                <li class="small"><span class="fa-li"><i class="fa fa-bullseye"></i></span>Tutar: @o.Tutar TL</li>
+                                                <li class="small"><span class="fa-li"><i class="fa fa-bullseye"></i></span>Durum: @o.Durum</li>
+                                                <li class="small"><span class="fa-li"><i class="fa fa-bullseye"></i></span>Aktif: @o.Silindi</li>
+
+                                            </ul>
+                                        </div>
+                                        <div class="col-5 text-center">
+                                            <img src="@k.Resim" alt="" class="img-circle img-fluid">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="text-right">
+                                        <div class="btn-group">
+                                            @if (o.Durum != "Onaylandı" && o.Durum!="Reddedildi")
+                                            {
+                                                if (Convert.ToInt32(fatura.KalanTutar) <= 0)
+                                                {
+                                                    <a href="#" class="btn btn-sm btn-success disabled">
+                                                        <i class="fa fa-check-square"></i> Onayla
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="/Admin/BildirimdenOdemeEkle?OBID=@o.OBID&HizmetID=@o.HizmetID&Tutar=@o.Tutar&OdemeYontem=@o.OdemeYontem&Durum=Onaylandı" class="btn btn-sm btn-success">
+                                                        <i class="fa fa-check-square"></i> Onayla
+                                                    </a>
+                                                }
+
+                                                <a href="/Admin/BildirimdenOdemeEkle?OBID=@o.OBID&HizmetID=@o.HizmetID&Durum=Reddedildi" class="btn btn-sm btn-danger">
+                                                    <i class="fa fa-times-circle"></i> Reddet
+                                                </a>
+                                            }
+                                            <a href="/Admin/BildirimdenOdemeEkle?OBID=@o.OBID&HizmetID=@o.HizmetID&Durum=Silindi" class="btn btn-sm btn-danger">
+                                                <i class="fa fa-trash"></i> Sil
+                                            </a>
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    </div>
+
+                </div>
+            <!-- /.card-body -->
+        </div>
+
+
+
+            
+</div>
+
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="OdemeEkle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Ödeme Ekle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("_OdemeEkle", "Admin", FormMethod.Post))
+            {
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Ödeme Yöntem</label>
+                        <select class="form-control select2" name="OdemeYontem" id="OdemeYontem" style="width: 100%;">
+                            <option value="Havale">Havale</option>
+                            <option value="EFT">EFT</option>
+                            <option value="Elden">Elden</option>
+                            <option value="İnternet">İnternet</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Alınan Odeme</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">₺</span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Alınan Odeme" id="AlınanOdeme" name="AlınanOdeme">
+                        </div>
+                    </div>
+                 
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Çık</button>
+                    <button type="submit" class="btn btn-warning">Ekle</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!--Hizmet Güncelle-->
+<div class="modal fade bd-example-modal-lg" id="HizmetGüncelle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">@Model.Firma  - @Model.HizmetAdi Güncelle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("HizmetDetay", "Admin", FormMethod.Post))
+            {
+                @Html.HiddenFor(x => x.HizmetID)
+                <div class="modal-body">
+
+
+                    <div class="form-group">
+                        <label>Müşteri Seçiniz</label>
+                        <select class="form-control select2" name="MüsteriID" id="MüsteriID" style="width: 100%;">
+                            @foreach (var a in ViewBag.Musteriler)
+                            {
+                                if (a.KullaniciID == Model.MüsteriID)
+                                {
+                                    <option selected="" value="@a.KullaniciID">@a.Firma - @a.AdSoyad</option>
+                                }
+                                else
+                                {
+                                    <option value="@a.KullaniciID">@a.Firma - @a.AdSoyad</option>
+                                }
+
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Hizmet Tipi Seçiniz</label>
+                        <select class="form-control select2" name="HizmetKategoriID" id="HizmetKategoriID" style="width: 100%;">
+                            @foreach (var a in ViewBag.Hizmetler)
+                            {
+                                if (a.HKategoriID == Model.HizmetKategoriID)
+                                {
+                                    <option selected="" value="@a.HKategoriID">@a.KategoriAd</option>
+                                }
+                                else
+                                {
+                                    <option value="@a.HKategoriID">@a.KategoriAd</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Temsilci Seçiniz</label>
+                        <select class="form-control select2" name="TemsilciID" id="HizmetKategoriID" style="width: 100%;">
+                            @foreach (var a in ViewBag.Temsilci)
+                            {
+                                if (a.KullaniciID == Model.TemsilciID)
+                                {
+                                    <option selected="" value="@a.KullaniciID">@a.KullaniciTip - @a.AdSoyad </option>
+                                }
+                                else
+                                {
+                                    <option value="@a.KullaniciID">@a.KullaniciTip - @a.AdSoyad </option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Hizmet Tanımı</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-briefcase"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Hizmet Tanimi" id="HizmetAdi" name="HizmetAdi" value="@Model.HizmetAdi">
+                        </div>
+                    </div>
+                    @if (Model.FTPSunucu != "" && Model.FTPSunucu != null)
+                    {
+                        <div class="form-group">
+                            <label>FTP Sunucu</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-h-square"></i></span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Sadece Website İçin Gerekli" id="FTPSunucu" name="FTPSunucu" value="@Model.FTPSunucu">
+                            </div>
+                        </div>
+                    }
+                    @if (Model.FTPKullaniciAdi != "" && Model.FTPKullaniciAdi != null)
+                    {
+                        <div class="form-group">
+                            <label>FTP Kullanıcı Adı</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-id-badge"></i></span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Sadece Website İçin Gerekli" id="FTPKullaniciAdi" name="FTPKullaniciAdi" value="@Model.FTPKullaniciAdi">
+                            </div>
+                        </div>
+                    }
+                    @if (Model.FTPSifre != "" && Model.FTPSifre != null)
+                    {
+                        <div class="form-group">
+                            <label>FTP Şifre</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-key"></i></span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Sadece Website İçin Gerekli" id="FTPSifre" name="FTPSifre" value="@Model.FTPSifre">
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                    }
+                    @if (Model.BaslangicTarihi != "" && Model.BaslangicTarihi != null)
+                    {
+                        <div class="form-group">
+                            <label>Hizmet Başlangıç Tarihi</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                </div>
+                                <input type="date" class="form-control" placeholder="Sadece Website İçin Gerekli" id="BaslangicTarihi" name="BaslangicTarihi" value="@Model.BaslangicTarihi">
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                    }
+                    @if (Model.BitisTarihi != "" && Model.BitisTarihi != null)
+                    {
+                        <div class="form-group">
+                            <label>Hizmet Bitiş Tarihi</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                </div>
+                                <input type="date" class="form-control" placeholder="Sadece Website İçin Gerekli" id="BitisTarihi" name="BitisTarihi" value="@Model.BitisTarihi">
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                    }
+                    <div class="form-group">
+                        <label>Hizmete Başlanma Tarihi</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                            </div>
+                            <input type="date" class="form-control" placeholder="Hizmete Başlanma Tarihi" id="HizmetBaslangicTarihi" name="HizmetBaslangicTarihi" value="@Model.HizmetBaslangicTarihi">
+                        </div>
+                        <!-- /.input group -->
+                    </div>
+                    <div class="form-group">
+                        <label>Hizmeti Tahmini Bitirme Tarihi</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                            </div>
+                            <input type="date" class="form-control" placeholder="Hizmeti Tahmini Bitirme Tarihi" id="HizmetBitisTarihi" name="HizmetBitisTarihi" value="@Model.HizmetBitisTarihi">
+                        </div>
+                        <!-- /.input group -->
+                    </div>
+                    <div class="form-group">
+                        <label>Hizmet Bedeli</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><b>₺</b></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Hizmet Tutarı" id="HizmetBedeli" name="HizmetBedeli" value="@Model.HizmetBedeli">
+                        </div>
+                        <!-- /.input group -->
+                        <div class="form-group">
+                            <label>Ödeme Durum</label>
+                            <select class="form-control select2" name="OdemeDurum" id="OdemeDurum" style="width: 100%;">
+                                @if (Model.OdemeDurum == "Ödendi")
+                                {
+                                    <option selected="" value="Ödendi">Ödendi</option>
+                                    <option value="Ödenmedi">Ödenmedi</option>
+                                }
+                                else
+                                {
+                                    <option value="Ödendi">Ödendi</option>
+                                    <option selected="" value="Ödenmedi">Ödenmedi</option>
+                                }
+
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Müşteri Notları</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-comment"></i></span>
+                            </div>
+                            <textarea type="text" class="form-control" placeholder="Müşteri Notları" id="Aciklama" name="Aciklama">@Model.Aciklama</textarea>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Çık</button>
+                    <button type="submit" class="btn btn-warning">Güncelle</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

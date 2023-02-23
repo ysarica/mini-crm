@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewBag.Title = "MesajOlustur";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Baslik{Mesaj Oluştur }
+@section sitemap{Mesaj Oluştur}
+@section title{Mesaj Oluştur}
+
+<div class="card card-primary card-outline">
+    <div class="card-header">
+        <h3 class="card-title">İşlemler</h3>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+
+@Html.Action("_MesajOlustur","Admin")
+    </div>
+    <!-- /.card-body -->
+</div>
