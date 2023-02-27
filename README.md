@@ -1,5 +1,6 @@
 # mini-crm
-This is a small-scale CRM project developed using ASP.NET MVC and SQL database.
+This is a small-scale CRM project developed using ASP.NET MVC and SQL database.The main objective of the project is to facilitate communication between the company owner and their customers. Customers can create service requests, request changes to existing services, and submit payment notifications. The company can then manage and fulfill these requests through a user-friendly panel.
+
 
 Detailed Video:https://youtu.be/h-0qOpE4hYw
 
